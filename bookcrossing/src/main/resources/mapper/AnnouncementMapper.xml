@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.zhenwen.bookcrossing.mapper.AnnouncementMapper">
+
+    <resultMap type="priv.zhenwen.bookcrossing.entity.Announcement" id="AnnouncementMap">
+        <result property="announcementId" column="announcement_id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="AnnouncementMap">
+        select
+          announcement_id, title, content, create_date
+        from announcement
+        where announcement_id = #{announcementId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="AnnouncementMap">
+        select
+          announcement_id, title, content, create_date
+        from announcement
+        <where>
+            <if test="announcementId != null">
+                and announcement_id = #{announcementId}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from announcement
+        <where>
+            <if test="announcementId != null">
+                and announcement_id = #{announcementId}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="announcementId" useGeneratedKeys="true">
+        insert into announcement(title, content, create_date)
+        values (#{title}, #{content}, #{createDate})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="announcementId" useGeneratedKeys="true">
+        insert into announcement(title, content, create_date)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.title}, #{entity.content}, #{entity.createDate})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="announcementId" useGeneratedKeys="true">
+        insert into announcement(title, content, create_date)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.title}, #{entity.content}, #{entity.createDate})
+        </foreach>
+        on duplicate key update
+        title = values(title),
+        content = values(content),
+        create_date = values(create_date)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update announcement
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+        </set>
+        where announcement_id = #{announcementId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from announcement where announcement_id = #{announcementId}
+    </delete>
+
+</mapper>
+

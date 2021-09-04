@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.zhenwen.bookcrossing.mapper.CrossInfoMapper">
+
+    <resultMap type="priv.zhenwen.bookcrossing.entity.CrossInfo" id="CrossInfoMap">
+        <result property="crossInfoId" column="cross_info_id" jdbcType="INTEGER"/>
+        <result property="bookId" column="book_id" jdbcType="INTEGER"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <result property="updateDate" column="update_date" jdbcType="TIMESTAMP"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CrossInfoMap">
+        select
+          cross_info_id, book_id, remark, type, status, create_date, update_date, user_id
+        from cross_info
+        where cross_info_id = #{crossInfoId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="CrossInfoMap">
+        select
+          cross_info_id, book_id, remark, type, status, create_date, update_date, user_id
+        from cross_info
+        <where>
+            <if test="crossInfoId != null">
+                and cross_info_id = #{crossInfoId}
+            </if>
+            <if test="bookId != null">
+                and book_id = #{bookId}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark = #{remark}
+            </if>
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+            <if test="updateDate != null">
+                and update_date = #{updateDate}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from cross_info
+        <where>
+            <if test="crossInfoId != null">
+                and cross_info_id = #{crossInfoId}
+            </if>
+            <if test="bookId != null">
+                and book_id = #{bookId}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark = #{remark}
+            </if>
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+            <if test="updateDate != null">
+                and update_date = #{updateDate}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="crossInfoId" useGeneratedKeys="true">
+        insert into cross_info(book_id, remark, type, status, create_date, update_date, user_id)
+        values (#{bookId}, #{remark}, #{type}, #{status}, #{createDate}, #{updateDate}, #{userId})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="crossInfoId" useGeneratedKeys="true">
+        insert into cross_info(book_id, remark, type, status, create_date, update_date, user_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.bookId}, #{entity.remark}, #{entity.type}, #{entity.status}, #{entity.createDate}, #{entity.updateDate}, #{entity.userId})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="crossInfoId" useGeneratedKeys="true">
+        insert into cross_info(book_id, remark, type, status, create_date, update_date, user_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.bookId}, #{entity.remark}, #{entity.type}, #{entity.status}, #{entity.createDate}, #{entity.updateDate}, #{entity.userId})
+        </foreach>
+        on duplicate key update
+        book_id = values(book_id),
+        remark = values(remark),
+        type = values(type),
+        status = values(status),
+        create_date = values(create_date),
+        update_date = values(update_date),
+        user_id = values(user_id)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update cross_info
+        <set>
+            <if test="bookId != null">
+                book_id = #{bookId},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="type != null and type != ''">
+                type = #{type},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+        </set>
+        where cross_info_id = #{crossInfoId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from cross_info where cross_info_id = #{crossInfoId}
+    </delete>
+
+</mapper>
+

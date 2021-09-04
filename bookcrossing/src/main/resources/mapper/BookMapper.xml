@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.zhenwen.bookcrossing.mapper.BookMapper">
+
+    <resultMap type="priv.zhenwen.bookcrossing.entity.Book" id="BookMap">
+        <result property="bookId" column="book_id" jdbcType="INTEGER"/>
+        <result property="bookNo" column="book_no" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="author" column="author" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BookMap">
+        select
+          book_id, book_no, name, author, type, status, create_date
+        from book
+        where book_id = #{bookId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BookMap">
+        select
+          book_id, book_no, name, author, type, status, create_date
+        from book
+        <where>
+            <if test="bookId != null">
+                and book_id = #{bookId}
+            </if>
+            <if test="bookNo != null and bookNo != ''">
+                and book_no = #{bookNo}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="author != null and author != ''">
+                and author = #{author}
+            </if>
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from book
+        <where>
+            <if test="bookId != null">
+                and book_id = #{bookId}
+            </if>
+            <if test="bookNo != null and bookNo != ''">
+                and book_no = #{bookNo}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="author != null and author != ''">
+                and author = #{author}
+            </if>
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="bookId" useGeneratedKeys="true">
+        insert into book(book_no, name, author, type, status, create_date)
+        values (#{bookNo}, #{name}, #{author}, #{type}, #{status}, #{createDate})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="bookId" useGeneratedKeys="true">
+        insert into book(book_no, name, author, type, status, create_date)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.bookNo}, #{entity.name}, #{entity.author}, #{entity.type}, #{entity.status}, #{entity.createDate})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="bookId" useGeneratedKeys="true">
+        insert into book(book_no, name, author, type, status, create_date)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.bookNo}, #{entity.name}, #{entity.author}, #{entity.type}, #{entity.status}, #{entity.createDate})
+        </foreach>
+        on duplicate key update
+        book_no = values(book_no),
+        name = values(name),
+        author = values(author),
+        type = values(type),
+        status = values(status),
+        create_date = values(create_date)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update book
+        <set>
+            <if test="bookNo != null and bookNo != ''">
+                book_no = #{bookNo},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="author != null and author != ''">
+                author = #{author},
+            </if>
+            <if test="type != null and type != ''">
+                type = #{type},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+        </set>
+        where book_id = #{bookId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from book where book_id = #{bookId}
+    </delete>
+
+</mapper>
+
