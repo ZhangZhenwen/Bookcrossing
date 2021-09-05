@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="priv.zhenwen.bookcrossing.mapper.LinkMapper">
+<mapper namespace="priv.zhenwen.bookcrossing.project.mapper.LinkMapper">
 
-    <resultMap type="priv.zhenwen.bookcrossing.entity.Link" id="LinkMap">
-        <result property="linkId" column="link_id" jdbcType="INTEGER"/>
-        <result property="url" column="url" jdbcType="VARCHAR"/>
-        <result property="content" column="content" jdbcType="VARCHAR"/>
-    </resultMap>
+    <resultMap type="priv.zhenwen.bookcrossing.project.entity.Link" id="LinkMap">
+                <result property="linkId" column="link_id" jdbcType="INTEGER"/>
+                <result property="url" column="url" jdbcType="VARCHAR"/>
+                <result property="content" column="content" jdbcType="VARCHAR"/>
+            </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="LinkMap">
@@ -16,6 +16,24 @@
         where link_id = #{linkId}
     </select>
 
+    <!--根据属性查询指定数据-->
+    <select id="queryAll" resultMap="LinkMap">
+        select
+          link_id, url, content
+        from link
+        <where>
+            <if test="linkId != null">
+                and link_id = #{linkId}
+            </if>
+            <if test="url != null and url != ''">
+                and url = #{url}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+        </where>
+    </select>
+    
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="LinkMap">
         select

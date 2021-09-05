@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="priv.zhenwen.bookcrossing.mapper.CommentMapper">
+<mapper namespace="priv.zhenwen.bookcrossing.project.mapper.CommentMapper">
 
-    <resultMap type="priv.zhenwen.bookcrossing.entity.Comment" id="CommentMap">
-        <result property="commentId" column="comment_id" jdbcType="INTEGER"/>
-        <result property="parentId" column="parent_id" jdbcType="INTEGER"/>
-        <result property="content" column="content" jdbcType="VARCHAR"/>
-        <result property="type" column="type" jdbcType="VARCHAR"/>
-        <result property="status" column="status" jdbcType="VARCHAR"/>
-        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
-        <result property="userId" column="user_id" jdbcType="INTEGER"/>
-    </resultMap>
+    <resultMap type="priv.zhenwen.bookcrossing.project.entity.Comment" id="CommentMap">
+                <result property="commentId" column="comment_id" jdbcType="INTEGER"/>
+                <result property="parentId" column="parent_id" jdbcType="INTEGER"/>
+                <result property="content" column="content" jdbcType="VARCHAR"/>
+                <result property="type" column="type" jdbcType="VARCHAR"/>
+                <result property="status" column="status" jdbcType="VARCHAR"/>
+                <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+                <result property="userId" column="user_id" jdbcType="INTEGER"/>
+            </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="CommentMap">
@@ -20,6 +20,36 @@
         where comment_id = #{commentId}
     </select>
 
+    <!--根据属性查询指定数据-->
+    <select id="queryAll" resultMap="CommentMap">
+        select
+          comment_id, parent_id, content, type, status, create_date, user_id
+        from comment
+        <where>
+            <if test="commentId != null">
+                and comment_id = #{commentId}
+            </if>
+            <if test="parentId != null">
+                and parent_id = #{parentId}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+        </where>
+    </select>
+    
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="CommentMap">
         select

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="priv.zhenwen.bookcrossing.mapper.BookMapper">
+<mapper namespace="priv.zhenwen.bookcrossing.project.mapper.BookMapper">
 
-    <resultMap type="priv.zhenwen.bookcrossing.entity.Book" id="BookMap">
-        <result property="bookId" column="book_id" jdbcType="INTEGER"/>
-        <result property="bookNo" column="book_no" jdbcType="VARCHAR"/>
-        <result property="name" column="name" jdbcType="VARCHAR"/>
-        <result property="author" column="author" jdbcType="VARCHAR"/>
-        <result property="type" column="type" jdbcType="VARCHAR"/>
-        <result property="status" column="status" jdbcType="VARCHAR"/>
-        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
-    </resultMap>
+    <resultMap type="priv.zhenwen.bookcrossing.project.entity.Book" id="BookMap">
+                <result property="bookId" column="book_id" jdbcType="INTEGER"/>
+                <result property="bookNo" column="book_no" jdbcType="VARCHAR"/>
+                <result property="name" column="name" jdbcType="VARCHAR"/>
+                <result property="author" column="author" jdbcType="VARCHAR"/>
+                <result property="type" column="type" jdbcType="VARCHAR"/>
+                <result property="status" column="status" jdbcType="VARCHAR"/>
+                <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+            </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="BookMap">
@@ -20,6 +20,36 @@
         where book_id = #{bookId}
     </select>
 
+    <!--根据属性查询指定数据-->
+    <select id="queryAll" resultMap="BookMap">
+        select
+          book_id, book_no, name, author, type, status, create_date
+        from book
+        <where>
+            <if test="bookId != null">
+                and book_id = #{bookId}
+            </if>
+            <if test="bookNo != null and bookNo != ''">
+                and book_no = #{bookNo}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="author != null and author != ''">
+                and author = #{author}
+            </if>
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+        </where>
+    </select>
+    
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BookMap">
         select

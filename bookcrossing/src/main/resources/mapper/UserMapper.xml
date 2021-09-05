@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="priv.zhenwen.bookcrossing.mapper.UserMapper">
+<mapper namespace="priv.zhenwen.bookcrossing.project.mapper.UserMapper">
 
-    <resultMap type="priv.zhenwen.bookcrossing.entity.User" id="UserMap">
-        <result property="userId" column="user_id" jdbcType="INTEGER"/>
-        <result property="username" column="username" jdbcType="VARCHAR"/>
-        <result property="email" column="email" jdbcType="VARCHAR"/>
-        <result property="password" column="password" jdbcType="VARCHAR"/>
-        <result property="type" column="type" jdbcType="VARCHAR"/>
-        <result property="status" column="status" jdbcType="VARCHAR"/>
-    </resultMap>
+    <resultMap type="priv.zhenwen.bookcrossing.project.entity.User" id="UserMap">
+                <result property="userId" column="user_id" jdbcType="INTEGER"/>
+                <result property="username" column="username" jdbcType="VARCHAR"/>
+                <result property="email" column="email" jdbcType="VARCHAR"/>
+                <result property="password" column="password" jdbcType="VARCHAR"/>
+                <result property="type" column="type" jdbcType="VARCHAR"/>
+                <result property="status" column="status" jdbcType="VARCHAR"/>
+            </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="UserMap">
@@ -19,6 +19,33 @@
         where user_id = #{userId}
     </select>
 
+    <!--根据属性查询指定数据-->
+    <select id="queryAll" resultMap="UserMap">
+        select
+          user_id, username, email, password, type, status
+        from user
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="email != null and email != ''">
+                and email = #{email}
+            </if>
+            <if test="password != null and password != ''">
+                and password = #{password}
+            </if>
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+    
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="UserMap">
         select
