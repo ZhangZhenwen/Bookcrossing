@@ -19,5 +19,20 @@
       "name": "token.expireTime",
       "type": "java.lang.String",
       "description": "Description for token.expireTime."
+    },
+    {
+      "name": "application.name",
+      "type": "java.lang.String",
+      "description": "Description for application.name."
+    },
+    {
+      "name": "application.description",
+      "type": "java.lang.String",
+      "description": "Description for application.description."
+    },
+    {
+      "name": "application.version",
+      "type": "java.lang.String",
+      "description": "Description for application.version."
     }
   ] }

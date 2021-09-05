@@ -1,7 +1,11 @@
 # 项目配置
 application:
   # 项目名称
-  name: KTP
+  name: Book Crossing
+  # 项目描述
+  description: 图书漂流系统
+  # 项目版本
+  version: 1.0.0
 
   # 上传文件的路径
   profile: /Users/zhenwen/MyProjects/ClassPle-Vue/classple/file
@@ -31,6 +35,11 @@ server:
 mybatis:
   type-aliases-package: priv.zhenwen.bookcrossing.project.entity
   mapper-locations: classpath*:mapper/*Mapper.xml
+
+swagger:
+  enable: true
+  tryHost:
+
 
 # token配置
 token:

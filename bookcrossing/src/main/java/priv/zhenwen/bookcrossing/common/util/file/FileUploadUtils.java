@@ -4,7 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 import priv.zhenwen.bookcrossing.common.constant.Constants;
 import priv.zhenwen.bookcrossing.common.util.Md5Utils;
 import priv.zhenwen.bookcrossing.common.util.StringUtils;
-import priv.zhenwen.bookcrossing.framework.config.ApplicationConfig;
+import priv.zhenwen.bookcrossing.framework.config.ApplicationProperties;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import java.io.IOException;
 
 public class FileUploadUtils {
 
-    private static String defaultBaseDir = ApplicationConfig.getProfile();
+    private static String defaultBaseDir = ApplicationProperties.getProfile();
 
     private static int counter = 0;
 
@@ -122,7 +122,7 @@ public class FileUploadUtils {
 
     private static String getPathFileName(String uploadDir, String fileName)
     {
-        int dirLastIndex = ApplicationConfig.getProfile().length() + 1;
+        int dirLastIndex = ApplicationProperties.getProfile().length() + 1;
         String currentDir = StringUtils.substring(uploadDir, dirLastIndex);
         return Constants.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
     }

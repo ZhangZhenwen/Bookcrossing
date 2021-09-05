@@ -9,11 +9,15 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConfigurationProperties("application")
-public class ApplicationConfig {
+public class ApplicationProperties {
     /**
      * 项目名称
      */
     private String name;
+
+    private String description;
+
+    private String version;
 
     /**
      * 文件路径
@@ -28,12 +32,28 @@ public class ApplicationConfig {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
     public static String getProfile() {
         return profile;
     }
 
     public void setProfile(String profile) {
-        ApplicationConfig.profile = profile;
+        ApplicationProperties.profile = profile;
     }
 
     public static String getAvatarPath() {
