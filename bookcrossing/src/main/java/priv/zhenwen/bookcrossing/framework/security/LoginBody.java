@@ -18,14 +18,4 @@ public class LoginBody {
      * 密码
      */
     private String password;
-
-    /**
-     * 验证码
-     */
-    private String code;
-
-    /**
-     * 标识符
-     */
-    private String uuid = "";
 }

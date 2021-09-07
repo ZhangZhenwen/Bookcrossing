@@ -1,6 +1,5 @@
 package priv.zhenwen.bookcrossing.framework.security.service;
 
-import eu.bitwalker.useragentutils.UserAgent;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -9,8 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import priv.zhenwen.bookcrossing.common.constant.Constants;
 import priv.zhenwen.bookcrossing.common.util.IdUtils;
-import priv.zhenwen.bookcrossing.common.util.IpUtils;
-import priv.zhenwen.bookcrossing.common.util.ServletUtils;
 import priv.zhenwen.bookcrossing.common.util.StringUtils;
 import priv.zhenwen.bookcrossing.framework.config.RedisCache;
 import priv.zhenwen.bookcrossing.framework.security.LoginUser;
@@ -69,9 +66,8 @@ public class TokenService {
 
             String uuid = (String) claims.get(Constants.LOGIN_USER_KEY);
             String userKey = getTokenKey(uuid);
-            LoginUser loginUser = redisCache.getCacheObject(userKey);
 
-            return loginUser;
+            return redisCache.getCacheObject(userKey);
         }
 
         return null;
@@ -110,7 +106,6 @@ public class TokenService {
     public String createToken(LoginUser loginUser) {
         String token = IdUtils.randomUUID();
         loginUser.setToken(token);
-        setUserAgent(loginUser);
         refreshToken(loginUser);
 
         Map<String, Object> claims = new HashMap<>(4);
@@ -122,7 +117,7 @@ public class TokenService {
     /**
      * 验证令牌有效期，不足20分钟自动刷新
      *
-     * @param loginUser
+     * @param loginUser 用户
      */
     public void verifyToken(LoginUser loginUser) {
         long expireTime = loginUser.getExpireTime();
@@ -148,20 +143,6 @@ public class TokenService {
 
     }
 
-
-    /**
-     * 设置用户代理信息
-     *
-     * @param loginUser 用户
-     */
-    public void setUserAgent(LoginUser loginUser) {
-        UserAgent userAgent = UserAgent.parseUserAgentString(ServletUtils.getRequest().getHeader("User-Agent"));
-        String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
-        loginUser.setIpaddr(ip);
-        loginUser.setBrowser(userAgent.getBrowser().getName());
-        loginUser.setOs(userAgent.getOperatingSystem().getName());
-    }
-
     /**
      * 从数据声明中生成令牌
      *
@@ -169,11 +150,10 @@ public class TokenService {
      * @return token
      */
     private String createToken(Map<String, Object> claims) {
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
-        return token;
     }
 
     /**
@@ -192,7 +172,7 @@ public class TokenService {
     /**
      * 获取请求的token
      *
-     * @param request
+     * @param request 请求
      * @return token
      */
     private String getToken(HttpServletRequest request) {

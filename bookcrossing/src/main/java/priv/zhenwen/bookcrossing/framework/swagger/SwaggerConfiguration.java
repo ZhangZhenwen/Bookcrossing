@@ -1,13 +1,11 @@
 package priv.zhenwen.bookcrossing.framework.swagger;
 
 import io.swagger.models.auth.In;
-import org.apache.commons.lang3.reflect.FieldUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootVersion;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.ReflectionUtils;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import priv.zhenwen.bookcrossing.framework.config.ApplicationProperties;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -19,7 +17,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -30,6 +27,9 @@ import java.util.*;
 @EnableOpenApi
 @Configuration
 public class SwaggerConfiguration implements WebMvcConfigurer {
+
+    @Value("${token.header}")
+    private String header;
 
     private final SwaggerProperties swaggerProperties;
 
@@ -75,7 +75,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder().title(applicationProperties.getName() + " Api Doc")
                 .description(applicationProperties.getDescription())
-                .contact(new Contact("lighter", null, "123456@gmail.com"))
+                .contact(new Contact("zhenwen", "https://zhenwen66.cn", "13075808821@163.com"))
                 .version("Application Version: " + applicationProperties.getVersion() + ", Spring Boot Version: " + SpringBootVersion.getVersion())
                 .build();
     }
@@ -84,7 +84,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
      * 设置授权信息
      */
     private List<SecurityScheme> securitySchemes() {
-        ApiKey apiKey = new ApiKey("BASE_TOKEN", "token", In.HEADER.toValue());
+        ApiKey apiKey = new ApiKey(header, "token", In.HEADER.toValue());
         return Collections.singletonList(apiKey);
     }
 
@@ -94,7 +94,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
     private List<SecurityContext> securityContexts() {
         return Collections.singletonList(
                 SecurityContext.builder()
-                        .securityReferences(Collections.singletonList(new SecurityReference("BASE_TOKEN", new AuthorizationScope[]{new AuthorizationScope("global", "")})))
+                        .securityReferences(Collections.singletonList(new SecurityReference(header, new AuthorizationScope[]{new AuthorizationScope("global", "")})))
                         .build()
         );
     }
@@ -108,26 +108,18 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
     }
 
     /**
-     * 通用拦截器排除swagger设置，所有拦截器都会自动加swagger相关的资源排除信息
+     * Spring Security放行
+     *
+     * @return 放行路径
      */
-    @SuppressWarnings("unchecked")
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        try {
-            Field registrationsField = FieldUtils.getField(InterceptorRegistry.class, "registrations", true);
-            List<InterceptorRegistration> registrations = (List<InterceptorRegistration>) ReflectionUtils.getField(registrationsField, registry);
-            if (registrations != null) {
-                for (InterceptorRegistration interceptorRegistration : registrations) {
-                    interceptorRegistration
-                            .excludePathPatterns("/swagger**/**")
-                            .excludePathPatterns("/webjars/**")
-                            .excludePathPatterns("/v3/**")
-                            .excludePathPatterns("/doc.html");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    @Bean
+    WebSecurityCustomizer swaggerWebSecurityCustomizer() {
+        return (webSecurity -> webSecurity.ignoring().antMatchers(
+                "/swagger-ui.html",
+                "/swagger-ui/**",
+                "/swagger-resources/**",
+                "/v2/api-docs",
+                "/v3/api-docs",
+                "/webjars/**"));
     }
-
 }

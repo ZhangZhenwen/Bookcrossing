@@ -9,20 +9,29 @@
                 <result property="password" column="password" jdbcType="VARCHAR"/>
                 <result property="type" column="type" jdbcType="VARCHAR"/>
                 <result property="status" column="status" jdbcType="VARCHAR"/>
+                <result property="tel" column="tel" jdbcType="VARCHAR"/>
             </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="UserMap">
         select
-          user_id, username, email, password, type, status
+          user_id, username, email, password, type, status, tel
         from user
         where user_id = #{userId}
+    </select>
+
+    <!--根据邮箱查询单个-->
+    <select id="queryByEmail" resultMap="UserMap">
+        select
+          user_id, username, email, password, type, status, tel
+        from user
+        where email = #{email}
     </select>
 
     <!--根据属性查询指定数据-->
     <select id="queryAll" resultMap="UserMap">
         select
-          user_id, username, email, password, type, status
+          user_id, username, email, password, type, status, tel
         from user
         <where>
             <if test="userId != null">
@@ -42,6 +51,9 @@
             </if>
             <if test="status != null and status != ''">
                 and status = #{status}
+            </if>
+            <if test="tel != null and tel != ''">
+                and tel = #{tel}
             </if>
         </where>
     </select>
@@ -49,7 +61,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="UserMap">
         select
-          user_id, username, email, password, type, status
+          user_id, username, email, password, type, status, tel
         from user
         <where>
             <if test="userId != null">
@@ -69,6 +81,9 @@
             </if>
             <if test="status != null and status != ''">
                 and status = #{status}
+            </if>
+            <if test="tel != null and tel != ''">
+                and tel = #{tel}
             </if>
         </where>
         limit #{pageable.offset}, #{pageable.pageSize}
@@ -97,35 +112,47 @@
             <if test="status != null and status != ''">
                 and status = #{status}
             </if>
+            <if test="tel != null and tel != ''">
+                and tel = #{tel}
+            </if>
         </where>
+    </select>
+
+    <!--根据用户名查询单个-->
+    <select id="queryByUsername" resultMap="UserMap">
+        select
+          user_id, username, email, password, type, status, tel
+        from user
+        where username = #{username}
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="userId" useGeneratedKeys="true">
-        insert into user(username, email, password, type, status)
-        values (#{username}, #{email}, #{password}, #{type}, #{status})
+        insert into user(username, email, password, type, status, tel)
+        values (#{username}, #{email}, #{password}, #{type}, #{status}, #{tel})
     </insert>
 
     <insert id="insertBatch" keyProperty="userId" useGeneratedKeys="true">
-        insert into user(username, email, password, type, status)
+        insert into user(username, email, password, type, status, tel)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.username}, #{entity.email}, #{entity.password}, #{entity.type}, #{entity.status})
+        (#{entity.username}, #{entity.email}, #{entity.password}, #{entity.type}, #{entity.status}, #{entity.tel})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="userId" useGeneratedKeys="true">
-        insert into user(username, email, password, type, status)
+        insert into user(username, email, password, type, status, tel)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.username}, #{entity.email}, #{entity.password}, #{entity.type}, #{entity.status})
+            (#{entity.username}, #{entity.email}, #{entity.password}, #{entity.type}, #{entity.status}, #{entity.tel})
         </foreach>
         on duplicate key update
         username = values(username),
         email = values(email),
         password = values(password),
         type = values(type),
-        status = values(status)
+        status = values(status),
+        tel = values(tel)
     </insert>
 
     <!--通过主键修改数据-->
@@ -146,6 +173,9 @@
             </if>
             <if test="status != null and status != ''">
                 status = #{status},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
             </if>
         </set>
         where user_id = #{userId}

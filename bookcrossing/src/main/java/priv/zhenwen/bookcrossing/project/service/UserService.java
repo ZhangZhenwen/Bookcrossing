@@ -21,14 +21,38 @@ public interface UserService {
      * @return 实例对象
      */
     User queryById(Long userId);
-    
+
     /**
      * 根据属性查询指定数据
-     * 
+     *
      * @param user 查询条件
      * @return 对象列表
      */
     List<User> queryAll(User user);
+
+    /**
+     * 根据邮箱查询单条数据
+     *
+     * @param email 邮箱
+     * @return 实例对象
+     */
+    User queryByEmail(String email);
+
+    /**
+     * 根据用户名查询单条数据
+     *
+     * @param username 邮箱
+     * @return 实例对象
+     */
+    User queryByUsername(String username);
+
+    /**
+     * 根据账号查询单条数据
+     *
+     * @param account 账号
+     * @return 实例对象
+     */
+    User queryByAccount(String account);
 
     /**
      * 分页查询

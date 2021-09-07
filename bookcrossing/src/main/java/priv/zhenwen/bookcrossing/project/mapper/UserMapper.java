@@ -22,6 +22,22 @@ public interface UserMapper {
      * @return 实例对象
      */
     User queryById(Long userId);
+
+    /**
+     * 通过Email查询单条数据
+     *
+     * @param email 邮箱
+     * @return 实例对象
+     */
+    User queryByEmail(String email);
+
+    /**
+     * 通过Username查询单条数据
+     *
+     * @param username 邮箱
+     * @return 实例对象
+     */
+    User queryByUsername(String username);
     
     /**
      * 根据属性查询指定数据

@@ -24,9 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User temp = new User();
-        temp.setEmail(username);
-        User user = userService.queryAll(temp).get(0);
+        User user = userService.queryByAccount(username);
 
         if (StringUtils.isNull(user))
         {

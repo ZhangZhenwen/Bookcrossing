@@ -4,6 +4,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import priv.zhenwen.bookcrossing.common.constant.HttpStatus;
+import priv.zhenwen.bookcrossing.common.constant.UserStatus;
 import priv.zhenwen.bookcrossing.common.exception.CustomException;
 import priv.zhenwen.bookcrossing.framework.security.LoginUser;
 
@@ -79,11 +80,11 @@ public class SecurityUtils {
     /**
      * 是否为管理员
      *
-     * @param userId 用户ID
+     * @param userType 用户类型
      * @return 结果
      */
-    public static boolean isAdmin(Integer userId)
+    public static boolean isAdmin(String userType)
     {
-        return userId != null && 1 == userId;
+        return UserStatus.ADMIN.equals(userType);
     }
 }

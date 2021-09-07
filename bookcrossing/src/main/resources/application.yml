@@ -6,39 +6,47 @@ application:
   description: 图书漂流系统
   # 项目版本
   version: 1.0.0
-
   # 上传文件的路径
   profile: /Users/zhenwen/MyProjects/ClassPle-Vue/classple/file
 
+# Spring配置
 spring:
   servlet:
+    # 文件上传
     multipart:
       enabled: true
       max-file-size: 50MB
       max-request-size: 150MB
-
+  # Mysql数据源
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/bookcrossing?serverTimeZone=UTC+8&useUnicode=true&characterEncoding=utf8
     username: root
     password: zzw12345
-
+  # Redis数据源
   redis:
     host: localhost
     port: 6379
     password:
     timeout: 10s
 
+  messages:
+    encoding: utf-8
+    basename: i18n/messages
+
+# Tomcat配置
 server:
   port: 8080
 
+# MyBatis配置
 mybatis:
   type-aliases-package: priv.zhenwen.bookcrossing.project.entity
   mapper-locations: classpath*:mapper/*Mapper.xml
 
+# Swagger配置
 swagger:
   enable: true
-  tryHost:
+  tryHost: http://localhost:${server.port}
 
 
 # token配置

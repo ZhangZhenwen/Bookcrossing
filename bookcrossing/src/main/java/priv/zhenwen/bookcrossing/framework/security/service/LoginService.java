@@ -13,7 +13,6 @@ import priv.zhenwen.bookcrossing.common.util.StringUtils;
 import priv.zhenwen.bookcrossing.framework.security.LoginUser;
 import priv.zhenwen.bookcrossing.project.entity.User;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,23 +23,25 @@ import java.util.Map;
 @Component
 public class LoginService {
 
-    @Autowired
-    private TokenService tokenService;
+    private final TokenService tokenService;
 
-    @Resource
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+
+    @Autowired
+    public LoginService(TokenService tokenService, AuthenticationManager authenticationManager) {
+        this.tokenService = tokenService;
+        this.authenticationManager = authenticationManager;
+    }
 
     /**
      * 登录验证
      *
      * @param username 账户
      * @param password 密码
-     * @param code 验证码
-     * @param uuid 标识符
      * @return 结果
      */
-    public String login(String username, String password, String code, String uuid) {
-        Authentication authentication = null;
+    public String login(String username, String password) {
+        Authentication authentication;
 
         try {
             authentication = authenticationManager
