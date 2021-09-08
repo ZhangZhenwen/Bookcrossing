@@ -1,17 +1,19 @@
 package priv.zhenwen.bookcrossing.project.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import priv.zhenwen.bookcrossing.common.constant.UserStatus;
 import priv.zhenwen.bookcrossing.common.exception.user.UserEmailExistException;
 import priv.zhenwen.bookcrossing.common.exception.user.UsernameExistException;
 import priv.zhenwen.bookcrossing.common.util.StringUtils;
 import priv.zhenwen.bookcrossing.project.entity.User;
 import priv.zhenwen.bookcrossing.project.mapper.UserMapper;
 import priv.zhenwen.bookcrossing.project.service.UserService;
-import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -22,8 +24,16 @@ import java.util.List;
  */
 @Service("userService")
 public class UserServiceImpl implements UserService {
-    @Resource
-    private UserMapper userMapper;
+
+    private final UserMapper userMapper;
+
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserServiceImpl(UserMapper userMapper, BCryptPasswordEncoder passwordEncoder) {
+        this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     /**
      * 通过ID查询单条数据
@@ -94,7 +104,7 @@ public class UserServiceImpl implements UserService {
      * @return 查询结果
      */
     @Override
-    public Page<User> queryByPage(User user, PageRequest pageRequest) {
+    public Page<User> queryByPage(User user, Pageable pageRequest) {
         long total = this.userMapper.count(user);
         return new PageImpl<>(this.userMapper.queryAllByLimit(user, pageRequest), pageRequest, total);
     }
@@ -117,6 +127,13 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isNotNull(queryByUsername(username))) {
             throw new UsernameExistException();
         }
+
+        String rawPassword = user.getPassword();
+        String newPassword = passwordEncoder.encode(rawPassword);
+        user.setPassword(newPassword);
+
+        user.setStatus(UserStatus.REVIEW);
+        user.setType(UserStatus.USER);
 
         this.userMapper.insert(user);
         return user;

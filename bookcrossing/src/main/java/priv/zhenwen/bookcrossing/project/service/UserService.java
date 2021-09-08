@@ -1,8 +1,8 @@
 package priv.zhenwen.bookcrossing.project.service;
 
-import priv.zhenwen.bookcrossing.project.entity.User;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import priv.zhenwen.bookcrossing.project.entity.User;
 
 import java.util.List;
 
@@ -61,7 +61,7 @@ public interface UserService {
      * @param pageRequest 分页对象
      * @return 查询结果
      */
-    Page<User> queryByPage(User user, PageRequest pageRequest);
+    Page<User> queryByPage(User user, Pageable pageRequest);
 
     /**
      * 新增数据

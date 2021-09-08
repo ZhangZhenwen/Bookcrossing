@@ -29,7 +29,17 @@ spring:
     port: 6379
     password:
     timeout: 10s
-
+  # 数据设置
+  data:
+    web:
+      # 分页设置
+      pageable:
+        one-indexed-parameters: true
+  # JSON设置
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  # 国际化设置
   messages:
     encoding: utf-8
     basename: i18n/messages
@@ -57,3 +67,10 @@ token:
   secret: abcdefghijklmnopqrstuvwxyz
   # 令牌有效期（默认30分钟）
   expireTime: 30
+
+#pagehelper分页插件配置
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

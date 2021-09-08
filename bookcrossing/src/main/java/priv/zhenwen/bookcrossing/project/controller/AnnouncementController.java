@@ -1,11 +1,10 @@
 package priv.zhenwen.bookcrossing.project.controller;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
+import priv.zhenwen.bookcrossing.framework.web.domain.AjaxResult;
 import priv.zhenwen.bookcrossing.project.entity.Announcement;
 import priv.zhenwen.bookcrossing.project.service.AnnouncementService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -13,7 +12,7 @@ import javax.annotation.Resource;
  * (Announcement)表控制层
  *
  * @author zhenwen
- * @since 2021-09-05 10:46:19
+ * @since 2021-09-08 16:57:14
  */
 @RestController
 @RequestMapping("announcement")
@@ -28,12 +27,12 @@ public class AnnouncementController {
      * 分页查询
      *
      * @param announcement 筛选条件
-     * @param pageRequest      分页对象
+     * @param pageRequest 分页对象
      * @return 查询结果
      */
-    @GetMapping
-    public ResponseEntity<Page<Announcement>> queryByPage(Announcement announcement, PageRequest pageRequest) {
-        return ResponseEntity.ok(this.announcementService.queryByPage(announcement, pageRequest));
+    @GetMapping("/list")
+    public AjaxResult queryByPage(Announcement announcement, Pageable pageRequest) {
+        return AjaxResult.ok(this.announcementService.queryByPage(announcement, pageRequest));
     }
 
     /**
@@ -43,8 +42,8 @@ public class AnnouncementController {
      * @return 单条数据
      */
     @GetMapping("{id}")
-    public ResponseEntity<Announcement> queryById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(this.announcementService.queryById(id));
+    public AjaxResult queryById(@PathVariable("id") Long id) {
+        return AjaxResult.ok(this.announcementService.queryById(id));
     }
 
     /**
@@ -53,9 +52,9 @@ public class AnnouncementController {
      * @param announcement 实体
      * @return 新增结果
      */
-    @PostMapping
-    public ResponseEntity<Announcement> add(Announcement announcement) {
-        return ResponseEntity.ok(this.announcementService.insert(announcement));
+    @PostMapping("/add")
+    public AjaxResult add(Announcement announcement) {
+        return AjaxResult.ok(this.announcementService.insert(announcement));
     }
 
     /**
@@ -64,9 +63,9 @@ public class AnnouncementController {
      * @param announcement 实体
      * @return 编辑结果
      */
-    @PutMapping
-    public ResponseEntity<Announcement> edit(Announcement announcement) {
-        return ResponseEntity.ok(this.announcementService.update(announcement));
+    @PutMapping("/edit")
+    public AjaxResult edit(Announcement announcement) {
+        return AjaxResult.ok(this.announcementService.update(announcement));
     }
 
     /**
@@ -75,9 +74,9 @@ public class AnnouncementController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteById(Long id) {
-        return ResponseEntity.ok(this.announcementService.deleteById(id));
+    @DeleteMapping("/delete")
+    public AjaxResult deleteById(Long id) {
+        return AjaxResult.ok(this.announcementService.deleteById(id));
     }
 
 }

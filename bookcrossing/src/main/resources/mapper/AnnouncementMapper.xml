@@ -44,17 +44,17 @@
           announcement_id, title, content, create_date
         from announcement
         <where>
-            <if test="announcementId != null">
-                and announcement_id = #{announcementId}
+            <if test="announcement.announcementId != null">
+                and announcement_id = #{announcement.announcementId}
             </if>
-            <if test="title != null and title != ''">
-                and title = #{title}
+            <if test="announcement.title != null and announcement.title != ''">
+                and title = #{announcement.title}
             </if>
-            <if test="content != null and content != ''">
-                and content = #{content}
+            <if test="announcement.content != null and announcement.content != ''">
+                and content = #{announcement.content}
             </if>
-            <if test="createDate != null">
-                and create_date = #{createDate}
+            <if test="announcement.createDate != null">
+                and create_date = #{announcement.createDate}
             </if>
         </where>
         limit #{pageable.offset}, #{pageable.pageSize}

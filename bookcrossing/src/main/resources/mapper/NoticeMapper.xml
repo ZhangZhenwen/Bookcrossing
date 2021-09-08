@@ -48,20 +48,20 @@
           notice_id, title, content, create_time, user_id
         from notice
         <where>
-            <if test="noticeId != null">
-                and notice_id = #{noticeId}
+            <if test="notice.noticeId != null">
+                and notice_id = #{notice.noticeId}
             </if>
-            <if test="title != null and title != ''">
-                and title = #{title}
+            <if test="notice.title != null and notice.title != ''">
+                and title = #{notice.title}
             </if>
-            <if test="content != null and content != ''">
-                and content = #{content}
+            <if test="notice.content != null and notice.content != ''">
+                and content = #{notice.content}
             </if>
-            <if test="createTime != null">
-                and create_time = #{createTime}
+            <if test="notice.createTime != null">
+                and create_time = #{notice.createTime}
             </if>
-            <if test="userId != null">
-                and user_id = #{userId}
+            <if test="notice.userId != null">
+                and user_id = #{notice.userId}
             </if>
         </where>
         limit #{pageable.offset}, #{pageable.pageSize}

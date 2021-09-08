@@ -1,11 +1,10 @@
 package priv.zhenwen.bookcrossing.project.controller;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
+import priv.zhenwen.bookcrossing.framework.web.domain.AjaxResult;
 import priv.zhenwen.bookcrossing.project.entity.Book;
 import priv.zhenwen.bookcrossing.project.service.BookService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -13,7 +12,7 @@ import javax.annotation.Resource;
  * (Book)表控制层
  *
  * @author zhenwen
- * @since 2021-09-05 10:46:19
+ * @since 2021-09-08 16:57:14
  */
 @RestController
 @RequestMapping("book")
@@ -28,12 +27,12 @@ public class BookController {
      * 分页查询
      *
      * @param book 筛选条件
-     * @param pageRequest      分页对象
+     * @param pageRequest 分页对象
      * @return 查询结果
      */
-    @GetMapping
-    public ResponseEntity<Page<Book>> queryByPage(Book book, PageRequest pageRequest) {
-        return ResponseEntity.ok(this.bookService.queryByPage(book, pageRequest));
+    @GetMapping("/list")
+    public AjaxResult queryByPage(Book book, Pageable pageRequest) {
+        return AjaxResult.ok(this.bookService.queryByPage(book, pageRequest));
     }
 
     /**
@@ -43,8 +42,8 @@ public class BookController {
      * @return 单条数据
      */
     @GetMapping("{id}")
-    public ResponseEntity<Book> queryById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(this.bookService.queryById(id));
+    public AjaxResult queryById(@PathVariable("id") Long id) {
+        return AjaxResult.ok(this.bookService.queryById(id));
     }
 
     /**
@@ -53,9 +52,9 @@ public class BookController {
      * @param book 实体
      * @return 新增结果
      */
-    @PostMapping
-    public ResponseEntity<Book> add(Book book) {
-        return ResponseEntity.ok(this.bookService.insert(book));
+    @PostMapping("/add")
+    public AjaxResult add(Book book) {
+        return AjaxResult.ok(this.bookService.insert(book));
     }
 
     /**
@@ -64,9 +63,9 @@ public class BookController {
      * @param book 实体
      * @return 编辑结果
      */
-    @PutMapping
-    public ResponseEntity<Book> edit(Book book) {
-        return ResponseEntity.ok(this.bookService.update(book));
+    @PutMapping("/edit")
+    public AjaxResult edit(Book book) {
+        return AjaxResult.ok(this.bookService.update(book));
     }
 
     /**
@@ -75,9 +74,9 @@ public class BookController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteById(Long id) {
-        return ResponseEntity.ok(this.bookService.deleteById(id));
+    @DeleteMapping("/delete")
+    public AjaxResult deleteById(Long id) {
+        return AjaxResult.ok(this.bookService.deleteById(id));
     }
 
 }

@@ -34,5 +34,25 @@
       "name": "application.version",
       "type": "java.lang.String",
       "description": "Description for application.version."
+    },
+    {
+      "name": "pagehelper.helperDialect",
+      "type": "java.lang.String",
+      "description": "Description for pagehelper.helperDialect."
+    },
+    {
+      "name": "pagehelper.reasonable",
+      "type": "java.lang.String",
+      "description": "Description for pagehelper.reasonable."
+    },
+    {
+      "name": "pagehelper.supportMethodsArguments",
+      "type": "java.lang.String",
+      "description": "Description for pagehelper.supportMethodsArguments."
+    },
+    {
+      "name": "pagehelper.params",
+      "type": "java.lang.String",
+      "description": "Description for pagehelper.params."
     }
   ] }

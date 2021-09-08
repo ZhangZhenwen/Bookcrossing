@@ -7,10 +7,10 @@ import java.io.Serializable;
  * (CrossInfo)实体类
  *
  * @author zhenwen
- * @since 2021-09-05 10:46:19
+ * @since 2021-09-08 16:57:14
  */
 public class CrossInfo implements Serializable {
-    private static final long serialVersionUID = 775125945857974475L;
+    private static final long serialVersionUID = 383026625575318478L;
     /**
      * 漂流ID
      */
@@ -28,7 +28,7 @@ public class CrossInfo implements Serializable {
      */
     private String type;
     /**
-     * 漂流状态（1：申请中、2：申请成功、3：漂流完成、4：已完成）
+     * 漂流状态（1：申请中、2：申请成功、3：漂流中、4：已完成）
      */
     private String status;
     /**

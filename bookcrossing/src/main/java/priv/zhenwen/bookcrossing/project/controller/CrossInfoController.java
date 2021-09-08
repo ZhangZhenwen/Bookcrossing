@@ -1,11 +1,10 @@
 package priv.zhenwen.bookcrossing.project.controller;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
+import priv.zhenwen.bookcrossing.framework.web.domain.AjaxResult;
 import priv.zhenwen.bookcrossing.project.entity.CrossInfo;
 import priv.zhenwen.bookcrossing.project.service.CrossInfoService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -13,7 +12,7 @@ import javax.annotation.Resource;
  * (CrossInfo)表控制层
  *
  * @author zhenwen
- * @since 2021-09-05 10:46:19
+ * @since 2021-09-08 16:57:14
  */
 @RestController
 @RequestMapping("crossInfo")
@@ -28,12 +27,12 @@ public class CrossInfoController {
      * 分页查询
      *
      * @param crossInfo 筛选条件
-     * @param pageRequest      分页对象
+     * @param pageRequest 分页对象
      * @return 查询结果
      */
-    @GetMapping
-    public ResponseEntity<Page<CrossInfo>> queryByPage(CrossInfo crossInfo, PageRequest pageRequest) {
-        return ResponseEntity.ok(this.crossInfoService.queryByPage(crossInfo, pageRequest));
+    @GetMapping("/list")
+    public AjaxResult queryByPage(CrossInfo crossInfo, Pageable pageRequest) {
+        return AjaxResult.ok(this.crossInfoService.queryByPage(crossInfo, pageRequest));
     }
 
     /**
@@ -43,8 +42,8 @@ public class CrossInfoController {
      * @return 单条数据
      */
     @GetMapping("{id}")
-    public ResponseEntity<CrossInfo> queryById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(this.crossInfoService.queryById(id));
+    public AjaxResult queryById(@PathVariable("id") Long id) {
+        return AjaxResult.ok(this.crossInfoService.queryById(id));
     }
 
     /**
@@ -53,9 +52,9 @@ public class CrossInfoController {
      * @param crossInfo 实体
      * @return 新增结果
      */
-    @PostMapping
-    public ResponseEntity<CrossInfo> add(CrossInfo crossInfo) {
-        return ResponseEntity.ok(this.crossInfoService.insert(crossInfo));
+    @PostMapping("/add")
+    public AjaxResult add(CrossInfo crossInfo) {
+        return AjaxResult.ok(this.crossInfoService.insert(crossInfo));
     }
 
     /**
@@ -64,9 +63,9 @@ public class CrossInfoController {
      * @param crossInfo 实体
      * @return 编辑结果
      */
-    @PutMapping
-    public ResponseEntity<CrossInfo> edit(CrossInfo crossInfo) {
-        return ResponseEntity.ok(this.crossInfoService.update(crossInfo));
+    @PutMapping("/edit")
+    public AjaxResult edit(CrossInfo crossInfo) {
+        return AjaxResult.ok(this.crossInfoService.update(crossInfo));
     }
 
     /**
@@ -75,9 +74,9 @@ public class CrossInfoController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteById(Long id) {
-        return ResponseEntity.ok(this.crossInfoService.deleteById(id));
+    @DeleteMapping("/delete")
+    public AjaxResult deleteById(Long id) {
+        return AjaxResult.ok(this.crossInfoService.deleteById(id));
     }
 
 }

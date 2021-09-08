@@ -10,7 +10,7 @@ import java.util.List;
  * (Comment)表数据库访问层
  *
  * @author zhenwen
- * @since 2021-09-05 10:46:19
+ * @since 2021-09-08 16:57:14
  */
 public interface CommentMapper {
 
@@ -37,7 +37,7 @@ public interface CommentMapper {
      * @param pageable 分页对象
      * @return 对象列表
      */
-    List<Comment> queryAllByLimit(Comment comment, @Param("pageable") Pageable pageable);
+    List<Comment> queryAllByLimit(@Param("comment") Comment comment, @Param("pageable") Pageable pageable);
 
     /**
      * 统计总行数

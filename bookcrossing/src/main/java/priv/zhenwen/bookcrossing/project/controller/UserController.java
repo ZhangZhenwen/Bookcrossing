@@ -1,10 +1,10 @@
 package priv.zhenwen.bookcrossing.project.controller;
 
+import priv.zhenwen.bookcrossing.framework.web.domain.AjaxResult;
 import priv.zhenwen.bookcrossing.project.entity.User;
 import priv.zhenwen.bookcrossing.project.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,9 +31,9 @@ public class UserController {
      * @param pageRequest      分页对象
      * @return 查询结果
      */
-    @GetMapping
-    public ResponseEntity<Page<User>> queryByPage(User user, PageRequest pageRequest) {
-        return ResponseEntity.ok(this.userService.queryByPage(user, pageRequest));
+    @GetMapping("/list")
+    public AjaxResult queryByPage(User user, PageRequest pageRequest) {
+        return AjaxResult.ok(this.userService.queryByPage(user, pageRequest));
     }
 
     /**
@@ -43,8 +43,8 @@ public class UserController {
      * @return 单条数据
      */
     @GetMapping("{id}")
-    public ResponseEntity<User> queryById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(this.userService.queryById(id));
+    public AjaxResult queryById(@PathVariable("id") Long id) {
+        return AjaxResult.ok(this.userService.queryById(id));
     }
 
     /**
@@ -53,9 +53,9 @@ public class UserController {
      * @param user 实体
      * @return 新增结果
      */
-    @PostMapping
-    public ResponseEntity<User> add(User user) {
-        return ResponseEntity.ok(this.userService.insert(user));
+    @PostMapping("/add")
+    public AjaxResult add(User user) {
+        return AjaxResult.ok(this.userService.insert(user));
     }
 
     /**
@@ -64,9 +64,9 @@ public class UserController {
      * @param user 实体
      * @return 编辑结果
      */
-    @PutMapping
-    public ResponseEntity<User> edit(User user) {
-        return ResponseEntity.ok(this.userService.update(user));
+    @PutMapping("/edit")
+    public AjaxResult edit(User user) {
+        return AjaxResult.ok(this.userService.update(user));
     }
 
     /**
@@ -75,9 +75,9 @@ public class UserController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteById(Long id) {
-        return ResponseEntity.ok(this.userService.deleteById(id));
+    @DeleteMapping("/delete")
+    public AjaxResult deleteById(Long id) {
+        return AjaxResult.ok(this.userService.deleteById(id));
     }
 
 }

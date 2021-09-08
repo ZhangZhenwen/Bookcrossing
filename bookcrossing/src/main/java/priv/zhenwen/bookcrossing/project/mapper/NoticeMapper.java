@@ -10,7 +10,7 @@ import java.util.List;
  * (Notice)表数据库访问层
  *
  * @author zhenwen
- * @since 2021-09-05 10:46:19
+ * @since 2021-09-08 16:57:14
  */
 public interface NoticeMapper {
 
@@ -37,7 +37,7 @@ public interface NoticeMapper {
      * @param pageable 分页对象
      * @return 对象列表
      */
-    List<Notice> queryAllByLimit(Notice notice, @Param("pageable") Pageable pageable);
+    List<Notice> queryAllByLimit(@Param("notice") Notice notice, @Param("pageable") Pageable pageable);
 
     /**
      * 统计总行数

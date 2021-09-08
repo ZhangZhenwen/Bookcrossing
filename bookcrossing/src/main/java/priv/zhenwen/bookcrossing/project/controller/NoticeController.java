@@ -1,11 +1,10 @@
 package priv.zhenwen.bookcrossing.project.controller;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
+import priv.zhenwen.bookcrossing.framework.web.domain.AjaxResult;
 import priv.zhenwen.bookcrossing.project.entity.Notice;
 import priv.zhenwen.bookcrossing.project.service.NoticeService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -13,7 +12,7 @@ import javax.annotation.Resource;
  * (Notice)表控制层
  *
  * @author zhenwen
- * @since 2021-09-05 10:46:19
+ * @since 2021-09-08 16:57:14
  */
 @RestController
 @RequestMapping("notice")
@@ -28,12 +27,12 @@ public class NoticeController {
      * 分页查询
      *
      * @param notice 筛选条件
-     * @param pageRequest      分页对象
+     * @param pageRequest 分页对象
      * @return 查询结果
      */
-    @GetMapping
-    public ResponseEntity<Page<Notice>> queryByPage(Notice notice, PageRequest pageRequest) {
-        return ResponseEntity.ok(this.noticeService.queryByPage(notice, pageRequest));
+    @GetMapping("/list")
+    public AjaxResult queryByPage(Notice notice, Pageable pageRequest) {
+        return AjaxResult.ok(this.noticeService.queryByPage(notice, pageRequest));
     }
 
     /**
@@ -43,8 +42,8 @@ public class NoticeController {
      * @return 单条数据
      */
     @GetMapping("{id}")
-    public ResponseEntity<Notice> queryById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(this.noticeService.queryById(id));
+    public AjaxResult queryById(@PathVariable("id") Long id) {
+        return AjaxResult.ok(this.noticeService.queryById(id));
     }
 
     /**
@@ -53,9 +52,9 @@ public class NoticeController {
      * @param notice 实体
      * @return 新增结果
      */
-    @PostMapping
-    public ResponseEntity<Notice> add(Notice notice) {
-        return ResponseEntity.ok(this.noticeService.insert(notice));
+    @PostMapping("/add")
+    public AjaxResult add(Notice notice) {
+        return AjaxResult.ok(this.noticeService.insert(notice));
     }
 
     /**
@@ -64,9 +63,9 @@ public class NoticeController {
      * @param notice 实体
      * @return 编辑结果
      */
-    @PutMapping
-    public ResponseEntity<Notice> edit(Notice notice) {
-        return ResponseEntity.ok(this.noticeService.update(notice));
+    @PutMapping("/edit")
+    public AjaxResult edit(Notice notice) {
+        return AjaxResult.ok(this.noticeService.update(notice));
     }
 
     /**
@@ -75,9 +74,9 @@ public class NoticeController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteById(Long id) {
-        return ResponseEntity.ok(this.noticeService.deleteById(id));
+    @DeleteMapping("/delete")
+    public AjaxResult deleteById(Long id) {
+        return AjaxResult.ok(this.noticeService.deleteById(id));
     }
 
 }

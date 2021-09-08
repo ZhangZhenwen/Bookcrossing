@@ -6,7 +6,7 @@ import priv.zhenwen.bookcrossing.project.service.CommentService;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * (Comment)表服务实现类
  *
  * @author zhenwen
- * @since 2021-09-05 10:46:19
+ * @since 2021-09-08 16:57:14
  */
 @Service("commentService")
 public class CommentServiceImpl implements CommentService {
@@ -49,11 +49,11 @@ public class CommentServiceImpl implements CommentService {
      * 分页查询
      *
      * @param comment 筛选条件
-     * @param pageRequest      分页对象
+     * @param pageRequest 分页对象
      * @return 查询结果
      */
     @Override
-    public Page<Comment> queryByPage(Comment comment, PageRequest pageRequest) {
+    public Page<Comment> queryByPage(Comment comment, Pageable pageRequest) {
         long total = this.commentMapper.count(comment);
         return new PageImpl<>(this.commentMapper.queryAllByLimit(comment, pageRequest), pageRequest, total);
     }

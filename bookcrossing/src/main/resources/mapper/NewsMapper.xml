@@ -44,17 +44,17 @@
           news_id, title, content, create_date
         from news
         <where>
-            <if test="newsId != null">
-                and news_id = #{newsId}
+            <if test="news.newsId != null">
+                and news_id = #{news.newsId}
             </if>
-            <if test="title != null and title != ''">
-                and title = #{title}
+            <if test="news.title != null and news.title != ''">
+                and title = #{news.title}
             </if>
-            <if test="content != null and content != ''">
-                and content = #{content}
+            <if test="news.content != null and news.content != ''">
+                and content = #{news.content}
             </if>
-            <if test="createDate != null">
-                and create_date = #{createDate}
+            <if test="news.createDate != null">
+                and create_date = #{news.createDate}
             </if>
         </where>
         limit #{pageable.offset}, #{pageable.pageSize}

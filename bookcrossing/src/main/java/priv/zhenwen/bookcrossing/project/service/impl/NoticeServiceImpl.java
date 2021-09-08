@@ -6,7 +6,7 @@ import priv.zhenwen.bookcrossing.project.service.NoticeService;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * (Notice)表服务实现类
  *
  * @author zhenwen
- * @since 2021-09-05 10:46:20
+ * @since 2021-09-08 16:57:14
  */
 @Service("noticeService")
 public class NoticeServiceImpl implements NoticeService {
@@ -49,11 +49,11 @@ public class NoticeServiceImpl implements NoticeService {
      * 分页查询
      *
      * @param notice 筛选条件
-     * @param pageRequest      分页对象
+     * @param pageRequest 分页对象
      * @return 查询结果
      */
     @Override
-    public Page<Notice> queryByPage(Notice notice, PageRequest pageRequest) {
+    public Page<Notice> queryByPage(Notice notice, Pageable pageRequest) {
         long total = this.noticeMapper.count(notice);
         return new PageImpl<>(this.noticeMapper.queryAllByLimit(notice, pageRequest), pageRequest, total);
     }

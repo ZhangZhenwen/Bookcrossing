@@ -6,7 +6,7 @@ import priv.zhenwen.bookcrossing.project.service.BookService;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * (Book)表服务实现类
  *
  * @author zhenwen
- * @since 2021-09-05 10:46:19
+ * @since 2021-09-08 16:57:14
  */
 @Service("bookService")
 public class BookServiceImpl implements BookService {
@@ -49,11 +49,11 @@ public class BookServiceImpl implements BookService {
      * 分页查询
      *
      * @param book 筛选条件
-     * @param pageRequest      分页对象
+     * @param pageRequest 分页对象
      * @return 查询结果
      */
     @Override
-    public Page<Book> queryByPage(Book book, PageRequest pageRequest) {
+    public Page<Book> queryByPage(Book book, Pageable pageRequest) {
         long total = this.bookMapper.count(book);
         return new PageImpl<>(this.bookMapper.queryAllByLimit(book, pageRequest), pageRequest, total);
     }

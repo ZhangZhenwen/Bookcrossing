@@ -1,6 +1,5 @@
 package priv.zhenwen.bookcrossing.project.controller;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +29,7 @@ public class LoginController {
     public AjaxResult login(String username, String password) {
         String token = loginService.login(username, password);
 
-        AjaxResult result = AjaxResult.success();
+        AjaxResult result = AjaxResult.ok();
         result.put(Constants.TOKEN, token);
 
         return result;
@@ -39,6 +38,6 @@ public class LoginController {
     @PostMapping("/register")
     public AjaxResult register(User user) {
         userService.insert(user);
-        return AjaxResult.success("注册成功！");
+        return AjaxResult.ok("注册成功！");
     }
 }

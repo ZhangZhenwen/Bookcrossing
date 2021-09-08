@@ -10,7 +10,7 @@ import java.util.List;
  * (News)表数据库访问层
  *
  * @author zhenwen
- * @since 2021-09-05 10:58:44
+ * @since 2021-09-08 16:57:14
  */
 public interface NewsMapper {
 
@@ -37,7 +37,7 @@ public interface NewsMapper {
      * @param pageable 分页对象
      * @return 对象列表
      */
-    List<News> queryAllByLimit(News news, @Param("pageable") Pageable pageable);
+    List<News> queryAllByLimit(@Param("news") News news, @Param("pageable") Pageable pageable);
 
     /**
      * 统计总行数

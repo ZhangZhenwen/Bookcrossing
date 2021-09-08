@@ -64,26 +64,26 @@
           user_id, username, email, password, type, status, tel
         from user
         <where>
-            <if test="userId != null">
-                and user_id = #{userId}
+            <if test="user.userId != null">
+                and user_id = #{user.userId}
             </if>
             <if test="username != null and username != ''">
-                and username = #{username}
+                and username = #{user.username}
             </if>
-            <if test="email != null and email != ''">
-                and email = #{email}
+            <if test="user.email != null and user.email != ''">
+                and email = #{user.email}
             </if>
-            <if test="password != null and password != ''">
-                and password = #{password}
+            <if test="user.password != null and user.password != ''">
+                and password = #{user.password}
             </if>
-            <if test="type != null and type != ''">
-                and type = #{type}
+            <if test="user.type != null and user.type != ''">
+                and type = #{user.type}
             </if>
-            <if test="status != null and status != ''">
-                and status = #{status}
+            <if test="user.status != null and user.status != ''">
+                and status = #{user.status}
             </if>
-            <if test="tel != null and tel != ''">
-                and tel = #{tel}
+            <if test="user.tel != null and user.tel != ''">
+                and tel = #{user.tel}
             </if>
         </where>
         limit #{pageable.offset}, #{pageable.pageSize}

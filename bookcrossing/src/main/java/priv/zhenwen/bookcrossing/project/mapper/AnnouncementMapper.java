@@ -10,7 +10,7 @@ import java.util.List;
  * (Announcement)表数据库访问层
  *
  * @author zhenwen
- * @since 2021-09-05 10:46:19
+ * @since 2021-09-08 16:57:14
  */
 public interface AnnouncementMapper {
 
@@ -37,7 +37,7 @@ public interface AnnouncementMapper {
      * @param pageable 分页对象
      * @return 对象列表
      */
-    List<Announcement> queryAllByLimit(Announcement announcement, @Param("pageable") Pageable pageable);
+    List<Announcement> queryAllByLimit(@Param("announcement") Announcement announcement, @Param("pageable") Pageable pageable);
 
     /**
      * 统计总行数

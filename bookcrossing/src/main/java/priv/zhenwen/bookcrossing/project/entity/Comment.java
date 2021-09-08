@@ -7,10 +7,10 @@ import java.io.Serializable;
  * (Comment)实体类
  *
  * @author zhenwen
- * @since 2021-09-05 10:46:19
+ * @since 2021-09-08 16:57:14
  */
 public class Comment implements Serializable {
-    private static final long serialVersionUID = 483829821066425089L;
+    private static final long serialVersionUID = 751455172432665349L;
     /**
      * 留言ID
      */

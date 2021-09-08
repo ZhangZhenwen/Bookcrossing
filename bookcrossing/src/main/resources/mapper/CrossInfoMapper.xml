@@ -60,29 +60,29 @@
           cross_info_id, book_id, remark, type, status, create_date, update_date, user_id
         from cross_info
         <where>
-            <if test="crossInfoId != null">
-                and cross_info_id = #{crossInfoId}
+            <if test="crossInfo.crossInfoId != null">
+                and cross_info_id = #{crossInfo.crossInfoId}
             </if>
-            <if test="bookId != null">
-                and book_id = #{bookId}
+            <if test="crossInfo.bookId != null">
+                and book_id = #{crossInfo.bookId}
             </if>
-            <if test="remark != null and remark != ''">
-                and remark = #{remark}
+            <if test="crossInfo.remark != null and crossInfo.remark != ''">
+                and remark = #{crossInfo.remark}
             </if>
-            <if test="type != null and type != ''">
-                and type = #{type}
+            <if test="crossInfo.type != null and crossInfo.type != ''">
+                and type = #{crossInfo.type}
             </if>
-            <if test="status != null and status != ''">
-                and status = #{status}
+            <if test="crossInfo.status != null and crossInfo.status != ''">
+                and status = #{crossInfo.status}
             </if>
-            <if test="createDate != null">
-                and create_date = #{createDate}
+            <if test="crossInfo.createDate != null">
+                and create_date = #{crossInfo.createDate}
             </if>
-            <if test="updateDate != null">
-                and update_date = #{updateDate}
+            <if test="crossInfo.updateDate != null">
+                and update_date = #{crossInfo.updateDate}
             </if>
-            <if test="userId != null">
-                and user_id = #{userId}
+            <if test="crossInfo.userId != null">
+                and user_id = #{crossInfo.userId}
             </if>
         </where>
         limit #{pageable.offset}, #{pageable.pageSize}

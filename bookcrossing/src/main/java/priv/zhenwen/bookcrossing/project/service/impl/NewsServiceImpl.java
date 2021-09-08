@@ -6,7 +6,7 @@ import priv.zhenwen.bookcrossing.project.service.NewsService;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * (News)表服务实现类
  *
  * @author zhenwen
- * @since 2021-09-05 10:58:44
+ * @since 2021-09-08 16:57:14
  */
 @Service("newsService")
 public class NewsServiceImpl implements NewsService {
@@ -49,11 +49,11 @@ public class NewsServiceImpl implements NewsService {
      * 分页查询
      *
      * @param news 筛选条件
-     * @param pageRequest      分页对象
+     * @param pageRequest 分页对象
      * @return 查询结果
      */
     @Override
-    public Page<News> queryByPage(News news, PageRequest pageRequest) {
+    public Page<News> queryByPage(News news, Pageable pageRequest) {
         long total = this.newsMapper.count(news);
         return new PageImpl<>(this.newsMapper.queryAllByLimit(news, pageRequest), pageRequest, total);
     }

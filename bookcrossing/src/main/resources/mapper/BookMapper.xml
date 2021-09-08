@@ -56,26 +56,26 @@
           book_id, book_no, name, author, type, status, create_date
         from book
         <where>
-            <if test="bookId != null">
-                and book_id = #{bookId}
+            <if test="book.bookId != null">
+                and book_id = #{book.bookId}
             </if>
-            <if test="bookNo != null and bookNo != ''">
-                and book_no = #{bookNo}
+            <if test="book.bookNo != null and book.bookNo != ''">
+                and book_no = #{book.bookNo}
             </if>
-            <if test="name != null and name != ''">
-                and name = #{name}
+            <if test="book.name != null and book.name != ''">
+                and name = #{book.name}
             </if>
-            <if test="author != null and author != ''">
-                and author = #{author}
+            <if test="book.author != null and book.author != ''">
+                and author = #{book.author}
             </if>
-            <if test="type != null and type != ''">
-                and type = #{type}
+            <if test="book.type != null and book.type != ''">
+                and type = #{book.type}
             </if>
-            <if test="status != null and status != ''">
-                and status = #{status}
+            <if test="book.status != null and book.status != ''">
+                and status = #{book.status}
             </if>
-            <if test="createDate != null">
-                and create_date = #{createDate}
+            <if test="book.createDate != null">
+                and create_date = #{book.createDate}
             </if>
         </where>
         limit #{pageable.offset}, #{pageable.pageSize}

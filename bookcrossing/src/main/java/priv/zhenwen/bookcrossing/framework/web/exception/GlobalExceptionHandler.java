@@ -60,10 +60,10 @@ public class GlobalExceptionHandler {
         return AjaxResult.error(e.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
-    public AjaxResult handleException(Exception e) {
-        return AjaxResult.error(e.getMessage());
-    }
+//    @ExceptionHandler(Exception.class)
+//    public AjaxResult handleException(Exception e) {
+//        return AjaxResult.error(e.getMessage());
+//    }
 
     /**
      * 自定义验证异常

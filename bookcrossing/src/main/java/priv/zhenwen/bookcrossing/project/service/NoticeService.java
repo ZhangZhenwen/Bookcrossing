@@ -2,7 +2,7 @@ package priv.zhenwen.bookcrossing.project.service;
 
 import priv.zhenwen.bookcrossing.project.entity.Notice;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * (Notice)表服务接口
  *
  * @author zhenwen
- * @since 2021-09-05 10:46:20
+ * @since 2021-09-08 16:57:14
  */
 public interface NoticeService {
 
@@ -37,7 +37,7 @@ public interface NoticeService {
      * @param pageRequest 分页对象
      * @return 查询结果
      */
-    Page<Notice> queryByPage(Notice notice, PageRequest pageRequest);
+    Page<Notice> queryByPage(Notice notice, Pageable pageRequest);
 
     /**
      * 新增数据

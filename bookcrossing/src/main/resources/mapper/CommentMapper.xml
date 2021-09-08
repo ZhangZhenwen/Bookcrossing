@@ -56,26 +56,26 @@
           comment_id, parent_id, content, type, status, create_date, user_id
         from comment
         <where>
-            <if test="commentId != null">
-                and comment_id = #{commentId}
+            <if test="comment.commentId != null">
+                and comment_id = #{comment.commentId}
             </if>
-            <if test="parentId != null">
-                and parent_id = #{parentId}
+            <if test="comment.parentId != null">
+                and parent_id = #{comment.parentId}
             </if>
-            <if test="content != null and content != ''">
-                and content = #{content}
+            <if test="comment.content != null and comment.content != ''">
+                and content = #{comment.content}
             </if>
-            <if test="type != null and type != ''">
-                and type = #{type}
+            <if test="comment.type != null and comment.type != ''">
+                and type = #{comment.type}
             </if>
-            <if test="status != null and status != ''">
-                and status = #{status}
+            <if test="comment.status != null and comment.status != ''">
+                and status = #{comment.status}
             </if>
-            <if test="createDate != null">
-                and create_date = #{createDate}
+            <if test="comment.createDate != null">
+                and create_date = #{comment.createDate}
             </if>
-            <if test="userId != null">
-                and user_id = #{userId}
+            <if test="comment.userId != null">
+                and user_id = #{comment.userId}
             </if>
         </where>
         limit #{pageable.offset}, #{pageable.pageSize}
