@@ -1,27 +1,35 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <TopNav />
+  <router-view />
+  <Footer />
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
+import { Options, Vue } from "vue-class-component";
+import TopNav from "@/components/TopNav.vue";
+import Footer from "@/components/Footer.vue";
 
-export default defineComponent({
-  name: 'App',
+@Options({
   components: {
-    HelloWorld
-  }
+    TopNav,
+    Footer,
+  },
 })
+export default class App extends Vue {}
 </script>
 
-<style>
+<style lang="less">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  font-size: 16px;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 </style>

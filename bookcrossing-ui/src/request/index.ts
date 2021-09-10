@@ -1,7 +1,17 @@
-import { projectList } from "./project"
-import {getTopNavInfo} from "./config/nav";
+import request, {get, post, put, del} from "@/request/http";
+import url from "@/request/url"
+
+/**
+ * @author zhenwen
+ * @date 2021/9/9
+ */
 
 export default {
-    projectList,
-    getTopNavInfo
+    request,
+    get,
+    post,
+    put,
+    del,
+
+    url,
 }

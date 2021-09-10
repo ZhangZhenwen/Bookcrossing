@@ -1,10 +1,10 @@
 package priv.zhenwen.bookcrossing.project.controller;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.*;
-import priv.zhenwen.bookcrossing.framework.web.domain.AjaxResult;
 import priv.zhenwen.bookcrossing.project.entity.Notice;
 import priv.zhenwen.bookcrossing.project.service.NoticeService;
+import priv.zhenwen.bookcrossing.framework.web.domain.AjaxResult;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * (Notice)表控制层
  *
  * @author zhenwen
- * @since 2021-09-08 16:57:14
+ * @since 2021-09-10 18:59:00
  */
 @RestController
 @RequestMapping("notice")
@@ -53,7 +53,7 @@ public class NoticeController {
      * @return 新增结果
      */
     @PostMapping("/add")
-    public AjaxResult add(Notice notice) {
+    public AjaxResult add(@RequestBody Notice notice) {
         return AjaxResult.ok(this.noticeService.insert(notice));
     }
 
@@ -64,7 +64,7 @@ public class NoticeController {
      * @return 编辑结果
      */
     @PutMapping("/edit")
-    public AjaxResult edit(Notice notice) {
+    public AjaxResult edit(@RequestBody Notice notice) {
         return AjaxResult.ok(this.noticeService.update(notice));
     }
 
@@ -74,8 +74,8 @@ public class NoticeController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping("/delete")
-    public AjaxResult deleteById(Long id) {
+    @DeleteMapping("/delete/{id}")
+    public AjaxResult deleteById(@PathVariable Long id) {
         return AjaxResult.ok(this.noticeService.deleteById(id));
     }
 

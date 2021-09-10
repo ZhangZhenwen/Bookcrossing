@@ -7,10 +7,10 @@ import java.io.Serializable;
  * (Announcement)实体类
  *
  * @author zhenwen
- * @since 2021-09-08 16:57:14
+ * @since 2021-09-10 18:59:00
  */
 public class Announcement implements Serializable {
-    private static final long serialVersionUID = 706489428498785403L;
+    private static final long serialVersionUID = 663426279120122956L;
     /**
      * 公告ID
      */

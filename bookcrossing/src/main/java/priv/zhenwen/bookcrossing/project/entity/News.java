@@ -7,10 +7,10 @@ import java.io.Serializable;
  * (News)实体类
  *
  * @author zhenwen
- * @since 2021-09-08 16:57:14
+ * @since 2021-09-10 18:59:00
  */
 public class News implements Serializable {
-    private static final long serialVersionUID = -61216229239213508L;
+    private static final long serialVersionUID = 655267586355619031L;
     /**
      * 新闻ID
      */

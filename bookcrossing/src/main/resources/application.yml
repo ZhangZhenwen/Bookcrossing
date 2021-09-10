@@ -51,13 +51,22 @@ server:
 # MyBatis配置
 mybatis:
   type-aliases-package: priv.zhenwen.bookcrossing.project.entity
-  mapper-locations: classpath*:mapper/*Mapper.xml
+  mapper-locations: classpath*:mybatis/mapper/*Mapper.xml
+  config-location: classpath:mybatis/mybatis-config.xml
+
+# log配置
+logging:
+  level:
+    priv:
+      zhenwen:
+        bookcrossing:
+          project:
+            mapper: debug
 
 # Swagger配置
 swagger:
   enable: true
   tryHost: http://localhost:${server.port}
-
 
 # token配置
 token:

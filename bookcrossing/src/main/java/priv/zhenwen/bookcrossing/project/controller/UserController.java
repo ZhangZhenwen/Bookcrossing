@@ -1,11 +1,10 @@
 package priv.zhenwen.bookcrossing.project.controller;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 import priv.zhenwen.bookcrossing.framework.web.domain.AjaxResult;
 import priv.zhenwen.bookcrossing.project.entity.User;
 import priv.zhenwen.bookcrossing.project.service.UserService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -32,7 +31,7 @@ public class UserController {
      * @return 查询结果
      */
     @GetMapping("/list")
-    public AjaxResult queryByPage(User user, PageRequest pageRequest) {
+    public AjaxResult queryByPage(User user, Pageable pageRequest) {
         return AjaxResult.ok(this.userService.queryByPage(user, pageRequest));
     }
 
@@ -54,7 +53,7 @@ public class UserController {
      * @return 新增结果
      */
     @PostMapping("/add")
-    public AjaxResult add(User user) {
+    public AjaxResult add(@RequestBody User user) {
         return AjaxResult.ok(this.userService.insert(user));
     }
 
@@ -65,7 +64,7 @@ public class UserController {
      * @return 编辑结果
      */
     @PutMapping("/edit")
-    public AjaxResult edit(User user) {
+    public AjaxResult edit(@RequestBody User user) {
         return AjaxResult.ok(this.userService.update(user));
     }
 
@@ -75,8 +74,8 @@ public class UserController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping("/delete")
-    public AjaxResult deleteById(Long id) {
+    @DeleteMapping("/delete/{id}")
+    public AjaxResult deleteById(@PathVariable Long id) {
         return AjaxResult.ok(this.userService.deleteById(id));
     }
 

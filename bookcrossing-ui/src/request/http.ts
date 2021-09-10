@@ -2,18 +2,16 @@ import axios from 'axios'
 import router from '../router';
 import store from '../store'
 import QS from 'qs'
+import { ElMessage } from "element-plus";
 
 const request = axios.create({
     headers: {'Content-Type': 'application/json; charset=utf-8'},
     baseURL: '/api'
 })
 
-/**
- * 请求头添加token
- */
 request.interceptors.request.use(
     config => {
-        const token = store;
+        const token = localStorage.getItem("token");
         token && (config.headers.Authorization = token);
         return config
     }
@@ -21,10 +19,13 @@ request.interceptors.request.use(
 
 request.interceptors.response.use(
     response => {
-        if(response.status === 200) {
-            return Promise.resolve(response.data);
+        if(response.data.code === 200) {
+            return Promise.resolve(response);
         } else {
-            return Promise.resolve(response.data);
+            ElMessage.error({
+                message: response.data.msg,
+                type: "error"
+            });
         }
     },
     error => {
@@ -32,7 +33,6 @@ request.interceptors.response.use(
             console.log(router.currentRoute)
             let path: any = router.currentRoute.value
             switch (error.response.status) {
-                // 没有权限信息
                 case 401:
                     router.replace({
                         path: '/login',
@@ -41,7 +41,6 @@ request.interceptors.response.use(
                         }
                     });
                     break;
-                // token过期
                 case 403:
                     localStorage.removeItem('token');
                     store.commit('loginSuccess', null);
@@ -55,7 +54,6 @@ request.interceptors.response.use(
                         })
                     }, 1000);
                     break;
-                // 资源不可达
                 case 404:
                     break;
                 default:
@@ -67,12 +65,6 @@ request.interceptors.response.use(
     }
 )
 
-/**
- * Get请求
- *
- * @param url 请求路径
- * @param params 请求参数
- */
 export function get(url: string, params: object) {
     return new Promise((resolve, reject) => {
         request.get(url, {
@@ -86,18 +78,34 @@ export function get(url: string, params: object) {
     })
 }
 
-/**
- * Post请求
- *
- * @param url 请求路径
- * @param params 请求参数
- */
 export function post(url: string, params: object) {
     return new Promise((resolve, reject) => {
-        request.post(url, QS.stringify(params))
+        request.post(url, JSON.stringify(params))
         .then(res => {
             resolve(res.data);
         }).catch(err => {
+            reject(err.data)
+        })
+    })
+}
+
+export function put(url: string, params: object) {
+    return new Promise((resolve, reject) => {
+        request.put(url, JSON.stringify(params))
+            .then(res => {
+                resolve(res.data);
+            }).catch(err => {
+            reject(err.data)
+        })
+    })
+}
+
+export function del(url: string, params: object) {
+    return new Promise((resolve, reject) => {
+        request.delete(url, {data: JSON.stringify(params)})
+            .then(res => {
+                resolve(res.data);
+            }).catch(err => {
             reject(err.data)
         })
     })

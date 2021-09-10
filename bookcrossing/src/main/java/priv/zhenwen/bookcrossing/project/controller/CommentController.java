@@ -1,10 +1,10 @@
 package priv.zhenwen.bookcrossing.project.controller;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.*;
-import priv.zhenwen.bookcrossing.framework.web.domain.AjaxResult;
 import priv.zhenwen.bookcrossing.project.entity.Comment;
 import priv.zhenwen.bookcrossing.project.service.CommentService;
+import priv.zhenwen.bookcrossing.framework.web.domain.AjaxResult;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * (Comment)表控制层
  *
  * @author zhenwen
- * @since 2021-09-08 16:57:14
+ * @since 2021-09-10 18:59:00
  */
 @RestController
 @RequestMapping("comment")
@@ -53,7 +53,7 @@ public class CommentController {
      * @return 新增结果
      */
     @PostMapping("/add")
-    public AjaxResult add(Comment comment) {
+    public AjaxResult add(@RequestBody Comment comment) {
         return AjaxResult.ok(this.commentService.insert(comment));
     }
 
@@ -64,7 +64,7 @@ public class CommentController {
      * @return 编辑结果
      */
     @PutMapping("/edit")
-    public AjaxResult edit(Comment comment) {
+    public AjaxResult edit(@RequestBody Comment comment) {
         return AjaxResult.ok(this.commentService.update(comment));
     }
 
@@ -74,8 +74,8 @@ public class CommentController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping("/delete")
-    public AjaxResult deleteById(Long id) {
+    @DeleteMapping("/delete/{id}")
+    public AjaxResult deleteById(@PathVariable Long id) {
         return AjaxResult.ok(this.commentService.deleteById(id));
     }
 

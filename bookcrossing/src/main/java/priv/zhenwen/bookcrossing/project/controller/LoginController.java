@@ -1,9 +1,11 @@
 package priv.zhenwen.bookcrossing.project.controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import priv.zhenwen.bookcrossing.common.constant.Constants;
+import priv.zhenwen.bookcrossing.framework.security.LoginBody;
 import priv.zhenwen.bookcrossing.framework.security.service.LoginService;
 import priv.zhenwen.bookcrossing.framework.web.domain.AjaxResult;
 import priv.zhenwen.bookcrossing.project.entity.User;
@@ -26,17 +28,17 @@ public class LoginController {
     UserService userService;
 
     @PostMapping("/login")
-    public AjaxResult login(String username, String password) {
-        String token = loginService.login(username, password);
+    public AjaxResult login(@RequestBody LoginBody loginBody) {
+        String token = loginService.login(loginBody.getEmail(), loginBody.getPassword());
 
-        AjaxResult result = AjaxResult.ok();
+        AjaxResult result = AjaxResult.ok("登录成功！");
         result.put(Constants.TOKEN, token);
 
         return result;
     }
 
     @PostMapping("/register")
-    public AjaxResult register(User user) {
+    public AjaxResult register(@RequestBody User user) {
         userService.insert(user);
         return AjaxResult.ok("注册成功！");
     }

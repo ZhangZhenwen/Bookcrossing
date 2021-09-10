@@ -10,9 +10,9 @@ import lombok.Data;
 public class LoginBody {
 
     /**
-     * 用户名
+     * 邮箱
      */
-    private String username;
+    private String email;
 
     /**
      * 密码

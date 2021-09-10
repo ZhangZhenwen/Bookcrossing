@@ -1,10 +1,10 @@
 package priv.zhenwen.bookcrossing.project.controller;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.*;
-import priv.zhenwen.bookcrossing.framework.web.domain.AjaxResult;
 import priv.zhenwen.bookcrossing.project.entity.Announcement;
 import priv.zhenwen.bookcrossing.project.service.AnnouncementService;
+import priv.zhenwen.bookcrossing.framework.web.domain.AjaxResult;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * (Announcement)表控制层
  *
  * @author zhenwen
- * @since 2021-09-08 16:57:14
+ * @since 2021-09-10 18:59:00
  */
 @RestController
 @RequestMapping("announcement")
@@ -53,7 +53,7 @@ public class AnnouncementController {
      * @return 新增结果
      */
     @PostMapping("/add")
-    public AjaxResult add(Announcement announcement) {
+    public AjaxResult add(@RequestBody Announcement announcement) {
         return AjaxResult.ok(this.announcementService.insert(announcement));
     }
 
@@ -64,7 +64,7 @@ public class AnnouncementController {
      * @return 编辑结果
      */
     @PutMapping("/edit")
-    public AjaxResult edit(Announcement announcement) {
+    public AjaxResult edit(@RequestBody Announcement announcement) {
         return AjaxResult.ok(this.announcementService.update(announcement));
     }
 
@@ -74,8 +74,8 @@ public class AnnouncementController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping("/delete")
-    public AjaxResult deleteById(Long id) {
+    @DeleteMapping("/delete/{id}")
+    public AjaxResult deleteById(@PathVariable Long id) {
         return AjaxResult.ok(this.announcementService.deleteById(id));
     }
 

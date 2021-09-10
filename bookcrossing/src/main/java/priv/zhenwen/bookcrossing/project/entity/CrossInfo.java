@@ -7,10 +7,10 @@ import java.io.Serializable;
  * (CrossInfo)实体类
  *
  * @author zhenwen
- * @since 2021-09-08 16:57:14
+ * @since 2021-09-10 18:59:00
  */
 public class CrossInfo implements Serializable {
-    private static final long serialVersionUID = 383026625575318478L;
+    private static final long serialVersionUID = 923072428316391781L;
     /**
      * 漂流ID
      */
