@@ -7,10 +7,10 @@ import java.io.Serializable;
  * (Book)实体类
  *
  * @author zhenwen
- * @since 2021-09-10 18:59:00
+ * @since 2021-09-14 17:25:29
  */
 public class Book implements Serializable {
-    private static final long serialVersionUID = 219920556245434942L;
+    private static final long serialVersionUID = 207957734585618110L;
     /**
      * 图书ID
      */
@@ -30,7 +30,7 @@ public class Book implements Serializable {
     /**
      * 图书类型
      */
-    private String type;
+    private Long type;
     /**
      * 图书状态（0：上传中、1：可出借、2：已出借）
      */
@@ -73,11 +73,11 @@ public class Book implements Serializable {
         this.author = author;
     }
 
-    public String getType() {
+    public Long getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Long type) {
         this.type = type;
     }
 

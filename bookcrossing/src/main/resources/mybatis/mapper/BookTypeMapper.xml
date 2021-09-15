@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.zhenwen.bookcrossing.project.mapper.BookTypeMapper">
+
+    <resultMap type="priv.zhenwen.bookcrossing.project.entity.BookType" id="BookTypeMap">
+                <result property="bookTypeId" column="book_type_id" jdbcType="INTEGER"/>
+                <result property="typeName" column="type_name" jdbcType="VARCHAR"/>
+                <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+            </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BookTypeMap">
+        select
+          book_type_id, type_name, create_date
+        from book_type
+        where book_type_id = #{bookTypeId}
+    </select>
+
+    <!--根据属性查询指定数据-->
+    <select id="queryAll" resultMap="BookTypeMap">
+        select
+          book_type_id, type_name, create_date
+        from book_type
+        <where>
+            <if test="bookTypeId != null">
+                and book_type_id = #{bookTypeId}
+            </if>
+            <if test="typeName != null and typeName != ''">
+                and type_name = #{typeName}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+        </where>
+    </select>
+    
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BookTypeMap">
+        select
+          book_type_id, type_name, create_date
+        from book_type
+        <where>
+            <if test="bookType.bookTypeId != null">
+                and book_type_id = #{bookType.bookTypeId}
+            </if>
+            <if test="bookType.typeName != null and bookType.typeName != ''">
+                and type_name = #{bookType.typeName}
+            </if>
+            <if test="bookType.createDate != null">
+                and create_date = #{bookType.createDate}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from book_type
+        <where>
+            <if test="bookTypeId != null">
+                and book_type_id = #{bookTypeId}
+            </if>
+            <if test="typeName != null and typeName != ''">
+                and type_name = #{typeName}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="bookTypeId" useGeneratedKeys="true">
+        insert into book_type(type_name, create_date)
+        values (#{typeName}, #{createDate})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="bookTypeId" useGeneratedKeys="true">
+        insert into book_type(type_name, create_date)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.typeName}, #{entity.createDate})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="bookTypeId" useGeneratedKeys="true">
+        insert into book_type(type_name, create_date)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.typeName}, #{entity.createDate})
+        </foreach>
+        on duplicate key update
+        type_name = values(type_name),
+        create_date = values(create_date)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update book_type
+        <set>
+            <if test="typeName != null and typeName != ''">
+                type_name = #{typeName},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+        </set>
+        where book_type_id = #{bookTypeId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from book_type where book_type_id = #{bookTypeId}
+    </delete>
+
+</mapper>
+

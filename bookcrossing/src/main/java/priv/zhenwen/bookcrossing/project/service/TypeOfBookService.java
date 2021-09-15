@@ -1,18 +1,18 @@
 package priv.zhenwen.bookcrossing.project.service;
 
-import priv.zhenwen.bookcrossing.project.entity.Book;
+import priv.zhenwen.bookcrossing.project.entity.TypeOfBook;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 /**
- * (Book)表服务接口
+ * (TypeOfBook)表服务接口
  *
  * @author zhenwen
- * @since 2021-09-14 17:25:29
+ * @since 2021-09-14 17:26:16
  */
-public interface BookService {
+public interface TypeOfBookService {
 
     /**
      * 通过ID查询单条数据
@@ -20,40 +20,40 @@ public interface BookService {
      * @param bookId 主键
      * @return 实例对象
      */
-    Book queryById(Long bookId);
+    TypeOfBook queryById(Long bookId);
     
     /**
      * 根据属性查询指定数据
      * 
-     * @param book 查询条件
+     * @param typeOfBook 查询条件
      * @return 对象列表
      */
-    List<Book> queryAll(Book book);
+    List<TypeOfBook> queryAll(TypeOfBook typeOfBook);
 
     /**
      * 分页查询
      *
-     * @param book 筛选条件
+     * @param typeOfBook 筛选条件
      * @param pageRequest 分页对象
      * @return 查询结果
      */
-    Page<Book> queryByPage(Book book, Pageable pageRequest);
+    Page<TypeOfBook> queryByPage(TypeOfBook typeOfBook, Pageable pageRequest);
 
     /**
      * 新增数据
      *
-     * @param book 实例对象
+     * @param typeOfBook 实例对象
      * @return 实例对象
      */
-    Book insert(Book book);
+    TypeOfBook insert(TypeOfBook typeOfBook);
 
     /**
      * 修改数据
      *
-     * @param book 实例对象
+     * @param typeOfBook 实例对象
      * @return 实例对象
      */
-    Book update(Book book);
+    TypeOfBook update(TypeOfBook typeOfBook);
 
     /**
      * 通过主键删除数据

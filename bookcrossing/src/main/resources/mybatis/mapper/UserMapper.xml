@@ -67,7 +67,7 @@
             <if test="user.userId != null">
                 and user_id = #{user.userId}
             </if>
-            <if test="username != null and username != ''">
+            <if test="user.username != null and user.username != ''">
                 and username = #{user.username}
             </if>
             <if test="user.email != null and user.email != ''">

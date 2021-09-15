@@ -1,66 +1,66 @@
 package priv.zhenwen.bookcrossing.project.service;
 
-import priv.zhenwen.bookcrossing.project.entity.Book;
+import priv.zhenwen.bookcrossing.project.entity.BookType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 /**
- * (Book)表服务接口
+ * (BookType)表服务接口
  *
  * @author zhenwen
  * @since 2021-09-14 17:25:29
  */
-public interface BookService {
+public interface BookTypeService {
 
     /**
      * 通过ID查询单条数据
      *
-     * @param bookId 主键
+     * @param bookTypeId 主键
      * @return 实例对象
      */
-    Book queryById(Long bookId);
+    BookType queryById(Long bookTypeId);
     
     /**
      * 根据属性查询指定数据
      * 
-     * @param book 查询条件
+     * @param bookType 查询条件
      * @return 对象列表
      */
-    List<Book> queryAll(Book book);
+    List<BookType> queryAll(BookType bookType);
 
     /**
      * 分页查询
      *
-     * @param book 筛选条件
+     * @param bookType 筛选条件
      * @param pageRequest 分页对象
      * @return 查询结果
      */
-    Page<Book> queryByPage(Book book, Pageable pageRequest);
+    Page<BookType> queryByPage(BookType bookType, Pageable pageRequest);
 
     /**
      * 新增数据
      *
-     * @param book 实例对象
+     * @param bookType 实例对象
      * @return 实例对象
      */
-    Book insert(Book book);
+    BookType insert(BookType bookType);
 
     /**
      * 修改数据
      *
-     * @param book 实例对象
+     * @param bookType 实例对象
      * @return 实例对象
      */
-    Book update(Book book);
+    BookType update(BookType bookType);
 
     /**
      * 通过主键删除数据
      *
-     * @param bookId 主键
+     * @param bookTypeId 主键
      * @return 是否成功
      */
-    boolean deleteById(Long bookId);
+    boolean deleteById(Long bookTypeId);
 
 }

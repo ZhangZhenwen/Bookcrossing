@@ -7,7 +7,7 @@
                 <result property="bookNo" column="book_no" jdbcType="VARCHAR"/>
                 <result property="name" column="name" jdbcType="VARCHAR"/>
                 <result property="author" column="author" jdbcType="VARCHAR"/>
-                <result property="type" column="type" jdbcType="VARCHAR"/>
+                <result property="type" column="type" jdbcType="INTEGER"/>
                 <result property="status" column="status" jdbcType="VARCHAR"/>
                 <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
             </resultMap>
@@ -38,7 +38,7 @@
             <if test="author != null and author != ''">
                 and author = #{author}
             </if>
-            <if test="type != null and type != ''">
+            <if test="type != null">
                 and type = #{type}
             </if>
             <if test="status != null and status != ''">
@@ -68,7 +68,7 @@
             <if test="book.author != null and book.author != ''">
                 and author = #{book.author}
             </if>
-            <if test="book.type != null and book.type != ''">
+            <if test="book.type != null">
                 and type = #{book.type}
             </if>
             <if test="book.status != null and book.status != ''">
@@ -98,7 +98,7 @@
             <if test="author != null and author != ''">
                 and author = #{author}
             </if>
-            <if test="type != null and type != ''">
+            <if test="type != null">
                 and type = #{type}
             </if>
             <if test="status != null and status != ''">
@@ -152,7 +152,7 @@
             <if test="author != null and author != ''">
                 author = #{author},
             </if>
-            <if test="type != null and type != ''">
+            <if test="type != null">
                 type = #{type},
             </if>
             <if test="status != null and status != ''">

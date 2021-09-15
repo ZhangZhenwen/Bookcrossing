@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.zhenwen.bookcrossing.project.mapper.TypeOfBookMapper">
+
+    <resultMap type="priv.zhenwen.bookcrossing.project.entity.TypeOfBook" id="TypeOfBookMap">
+                <result property="bookId" column="book_id" jdbcType="INTEGER"/>
+                <result property="bookTypeId" column="book_type_id" jdbcType="INTEGER"/>
+                <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+            </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TypeOfBookMap">
+        select
+          book_id, book_type_id, create_date
+        from type_of_book
+        where book_id = #{bookId}
+    </select>
+
+    <!--根据属性查询指定数据-->
+    <select id="queryAll" resultMap="TypeOfBookMap">
+        select
+          book_id, book_type_id, create_date
+        from type_of_book
+        <where>
+            <if test="bookId != null">
+                and book_id = #{bookId}
+            </if>
+            <if test="bookTypeId != null">
+                and book_type_id = #{bookTypeId}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+        </where>
+    </select>
+    
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TypeOfBookMap">
+        select
+          book_id, book_type_id, create_date
+        from type_of_book
+        <where>
+            <if test="typeOfBook.bookId != null">
+                and book_id = #{typeOfBook.bookId}
+            </if>
+            <if test="typeOfBook.bookTypeId != null">
+                and book_type_id = #{typeOfBook.bookTypeId}
+            </if>
+            <if test="typeOfBook.createDate != null">
+                and create_date = #{typeOfBook.createDate}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from type_of_book
+        <where>
+            <if test="bookId != null">
+                and book_id = #{bookId}
+            </if>
+            <if test="bookTypeId != null">
+                and book_type_id = #{bookTypeId}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="bookId" useGeneratedKeys="true">
+        insert into type_of_book(create_date)
+        values (#{createDate})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="bookId" useGeneratedKeys="true">
+        insert into type_of_book(create_date)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.createDate})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="bookId" useGeneratedKeys="true">
+        insert into type_of_book(create_date)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.createDate})
+        </foreach>
+        on duplicate key update
+        create_date = values(create_date)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update type_of_book
+        <set>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+        </set>
+        where book_id = #{bookId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from type_of_book where book_id = #{bookId}
+    </delete>
+
+</mapper>
+

@@ -37,6 +37,16 @@ public class LoginController {
         return result;
     }
 
+    @PostMapping("/admin/login")
+    public AjaxResult adminLogin(@RequestBody LoginBody loginBody) {
+        String token = loginService.adminLogin(loginBody.getEmail(), loginBody.getPassword());
+
+        AjaxResult result = AjaxResult.ok("登录成功！");
+        result.put(Constants.TOKEN, token);
+
+        return result;
+    }
+
     @PostMapping("/register")
     public AjaxResult register(@RequestBody User user) {
         userService.insert(user);

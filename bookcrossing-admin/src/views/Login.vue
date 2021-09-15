@@ -1,14 +1,11 @@
 <template>
   <div id="main" class="container">
     <!-- Account:LogIn -->
-    <div class="row">
-      <div id="content" class="col-sm-12 col-lg-9">
-        <h1 class="capitalize">
+    <div>
+      <div id="content">
+        <h1>
           登入
         </h1>
-        <p>
-          請輸入你的電郵地址和密碼。 如果你沒有帳戶， <a href="/register">Join</a>
-        </p>
         <div class="form">
           <el-form ref="formRef" :model="form" :rules="rules">
             <el-form-item label="邮箱地址" prop="email">
@@ -69,7 +66,7 @@ export default {
 
       try {
         await validate.validate();
-        api.post("/login", form.value).then((res: any) => {
+        api.post("/admin/login", form.value).then((res: any) => {
           console.log(res);
           localStorage.setItem("token", res.token)
           ElMessage.success({
@@ -98,6 +95,7 @@ export default {
   min-height: 87vh;
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 500px;
 }
 
 .container {
@@ -107,59 +105,6 @@ export default {
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
-}
-
-.h1, .h2, .h3, .h4, .h5, h1, h2, h3, h4, h5 {
-  font-family: "IBM Plex Sans Condensed", "IBM Plex Sans", -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-  opacity: .7;
-  font-weight: 700;
-}
-
-.row {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px;
-}
-
-.col-lg-9 {
-  flex: 0 0 75%;
-  max-width: 75%;
-
-  position: relative;
-  width: 100%;
-  min-height: 1px;
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
-.col-sm-12 {
-  position: relative;
-  width: 100%;
-  min-height: 1px;
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
-.capitalize {
-  text-transform: capitalize;
-}
-
-p {
-  margin-top: 0;
-  margin-bottom: 1rem;
-}
-
-.h1, h1 {
-  font-size: 2.5rem;
-}
-
-.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-  margin-bottom: .5rem;
-  line-height: 1.2;
-  color: inherit;
 }
 
 .form {

@@ -3,36 +3,36 @@ package priv.zhenwen.bookcrossing.project.controller;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import priv.zhenwen.bookcrossing.framework.web.domain.AjaxResult;
-import priv.zhenwen.bookcrossing.project.entity.Book;
-import priv.zhenwen.bookcrossing.project.service.BookService;
+import priv.zhenwen.bookcrossing.project.entity.BookType;
+import priv.zhenwen.bookcrossing.project.service.BookTypeService;
 
 import javax.annotation.Resource;
 
 /**
- * (Book)表控制层
+ * (BookType)表控制层
  *
  * @author zhenwen
  * @since 2021-09-14 17:25:29
  */
 @RestController
-@RequestMapping("book")
-public class BookController {
+@RequestMapping("bookType")
+public class BookTypeController {
     /**
      * 服务对象
      */
     @Resource
-    private BookService bookService;
+    private BookTypeService bookTypeService;
 
     /**
      * 分页查询
      *
-     * @param book 筛选条件
+     * @param bookType 筛选条件
      * @param pageRequest 分页对象
      * @return 查询结果
      */
     @GetMapping("/list")
-    public AjaxResult queryByPage(Book book, Pageable pageRequest) {
-        return AjaxResult.ok(this.bookService.queryByPage(book, pageRequest));
+    public AjaxResult queryByPage(BookType bookType, Pageable pageRequest) {
+        return AjaxResult.ok(this.bookTypeService.queryByPage(bookType, pageRequest));
     }
 
     /**
@@ -43,29 +43,29 @@ public class BookController {
      */
     @GetMapping("{id}")
     public AjaxResult queryById(@PathVariable("id") Long id) {
-        return AjaxResult.ok(this.bookService.queryById(id));
+        return AjaxResult.ok(this.bookTypeService.queryById(id));
     }
 
     /**
      * 新增数据
      *
-     * @param book 实体
+     * @param bookType 实体
      * @return 新增结果
      */
     @PostMapping("/add")
-    public AjaxResult add(@RequestBody Book book) {
-        return AjaxResult.ok(this.bookService.insert(book));
+    public AjaxResult add(@RequestBody BookType bookType) {
+        return AjaxResult.ok(this.bookTypeService.insert(bookType));
     }
 
     /**
      * 编辑数据
      *
-     * @param book 实体
+     * @param bookType 实体
      * @return 编辑结果
      */
     @PutMapping("/edit")
-    public AjaxResult edit(@RequestBody Book book) {
-        return AjaxResult.ok(this.bookService.update(book));
+    public AjaxResult edit(@RequestBody BookType bookType) {
+        return AjaxResult.ok(this.bookTypeService.update(bookType));
     }
 
     /**
@@ -76,7 +76,7 @@ public class BookController {
      */
     @DeleteMapping("/delete/{id}")
     public AjaxResult deleteById(@PathVariable Long id) {
-        return AjaxResult.ok(this.bookService.deleteById(id));
+        return AjaxResult.ok(this.bookTypeService.deleteById(id));
     }
 
 }

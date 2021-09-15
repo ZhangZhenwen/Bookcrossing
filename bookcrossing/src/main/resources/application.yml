@@ -37,7 +37,7 @@ spring:
         one-indexed-parameters: true
   # JSON设置
   jackson:
-    date-format: yyyy-MM-dd HH:mm:ss
+    # date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   # 国际化设置
   messages:
