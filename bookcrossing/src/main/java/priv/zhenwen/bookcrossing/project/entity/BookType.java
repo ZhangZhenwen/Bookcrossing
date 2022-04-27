@@ -16,6 +16,10 @@ public class BookType implements Serializable {
      */
     private Long bookTypeId;
     /**
+     * 图书类型代码
+     */
+    private String typeCode;
+    /**
      * 图书类型名称
      */
     private String typeName;
@@ -31,6 +35,14 @@ public class BookType implements Serializable {
 
     public void setBookTypeId(Long bookTypeId) {
         this.bookTypeId = bookTypeId;
+    }
+
+    public String getTypeCode() {
+        return typeCode;
+    }
+
+    public void setTypeCode(String typeCode) {
+        this.typeCode = typeCode;
     }
 
     public String getTypeName() {

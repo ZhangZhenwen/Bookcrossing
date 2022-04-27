@@ -1,34 +1,42 @@
 <template>
   <el-container class="container">
-    <el-aside class="aside">
-      <el-menu
-        :default-active="activeIndex"
-        @select="handleSelect"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b"
-        class="menu"
-      >
-        <el-menu-item class="menu-item" index="bookType">
-          <span class="menu-font">图书类型管理</span>
-        </el-menu-item>
-        <el-menu-item class="menu-item" index="announcement">
-          <span class="menu-font">公告管理</span>
-        </el-menu-item>
-        <el-menu-item class="menu-item" index="news">
-          <span class="menu-font">新闻管理</span>
-        </el-menu-item>
-        <el-menu-item class="menu-item" index="comment">
-          <span class="menu-font">留言管理</span>
-        </el-menu-item>
-        <el-menu-item class="menu-item" index="user">
-          <span class="menu-font">用户管理</span>
-        </el-menu-item>
-      </el-menu>
-    </el-aside>
-    <el-main>
-      <router-view />
-    </el-main>
+    <el-header>
+      <h1>图书管理系统后台管理</h1>
+    </el-header>
+    <el-container>
+      <el-aside class="aside">
+        <el-menu
+            :default-active="activeIndex"
+            @select="handleSelect"
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b"
+            class="menu"
+        >
+          <el-menu-item class="menu-item" index="book">
+            <span class="menu-font">图书管理</span>
+          </el-menu-item>
+          <el-menu-item class="menu-item" index="bookType">
+            <span class="menu-font">图书类型管理</span>
+          </el-menu-item>
+          <el-menu-item class="menu-item" index="announcement">
+            <span class="menu-font">公告管理</span>
+          </el-menu-item>
+          <el-menu-item class="menu-item" index="news">
+            <span class="menu-font">新闻管理</span>
+          </el-menu-item>
+          <el-menu-item class="menu-item" index="comment">
+            <span class="menu-font">留言管理</span>
+          </el-menu-item>
+          <el-menu-item class="menu-item" index="user">
+            <span class="menu-font">用户管理</span>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
+      <el-main>
+        <router-view />
+      </el-main>
+    </el-container>
   </el-container>
 </template>
 

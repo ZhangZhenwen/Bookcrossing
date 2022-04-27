@@ -106,4 +106,15 @@ public class LoginService {
 
         return infos;
     }
+
+    public Long getUserId() {
+        LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
+
+        if (StringUtils.isNotNull(loginUser)) {
+            User user = loginUser.getUser();
+            return user.getUserId();
+        }
+
+        return null;
+    }
 }

@@ -3,19 +3,29 @@
 <mapper namespace="priv.zhenwen.bookcrossing.project.mapper.BookMapper">
 
     <resultMap type="priv.zhenwen.bookcrossing.project.entity.Book" id="BookMap">
-                <result property="bookId" column="book_id" jdbcType="INTEGER"/>
-                <result property="bookNo" column="book_no" jdbcType="VARCHAR"/>
-                <result property="name" column="name" jdbcType="VARCHAR"/>
-                <result property="author" column="author" jdbcType="VARCHAR"/>
-                <result property="type" column="type" jdbcType="INTEGER"/>
-                <result property="status" column="status" jdbcType="VARCHAR"/>
-                <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
-            </resultMap>
+        <result property="bookId" column="book_id" jdbcType="INTEGER"/>
+        <result property="bookNo" column="book_no" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="author" column="author" jdbcType="VARCHAR"/>
+        <result property="introduction" column="introduction" jdbcType="LONGVARCHAR"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="columns">
+        book_id, book_no, name, author, introduction, type, status, create_date, user_id
+    </sql>
+
+    <sql id="columns_no_key">
+        book_no, name, author, introduction, type, status, create_date, user_id
+    </sql>
 
     <!--查询单个-->
     <select id="queryById" resultMap="BookMap">
         select
-          book_id, book_no, name, author, type, status, create_date
+          <include refid="columns" />
         from book
         where book_id = #{bookId}
     </select>
@@ -23,7 +33,7 @@
     <!--根据属性查询指定数据-->
     <select id="queryAll" resultMap="BookMap">
         select
-          book_id, book_no, name, author, type, status, create_date
+          <include refid="columns" />
         from book
         <where>
             <if test="bookId != null">
@@ -38,6 +48,9 @@
             <if test="author != null and author != ''">
                 and author = #{author}
             </if>
+            <if test="introduction != null and introduction != ''">
+                and introduction = #{introduction}
+            </if>
             <if test="type != null">
                 and type = #{type}
             </if>
@@ -47,13 +60,16 @@
             <if test="createDate != null">
                 and create_date = #{createDate}
             </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
         </where>
     </select>
     
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BookMap">
         select
-          book_id, book_no, name, author, type, status, create_date
+          <include refid="columns" />
         from book
         <where>
             <if test="book.bookId != null">
@@ -68,6 +84,9 @@
             <if test="book.author != null and book.author != ''">
                 and author = #{book.author}
             </if>
+            <if test="book.introduction != null and book.introduction != ''">
+                and introduction = #{introduction}
+            </if>
             <if test="book.type != null">
                 and type = #{book.type}
             </if>
@@ -76,6 +95,9 @@
             </if>
             <if test="book.createDate != null">
                 and create_date = #{book.createDate}
+            </if>
+            <if test="book.userId != null">
+                and user_id = #{book.userId}
             </if>
         </where>
         limit #{pageable.offset}, #{pageable.pageSize}
@@ -98,6 +120,9 @@
             <if test="author != null and author != ''">
                 and author = #{author}
             </if>
+            <if test="introduction != null and introduction != ''">
+                and introduction = #{introduction}
+            </if>
             <if test="type != null">
                 and type = #{type}
             </if>
@@ -107,36 +132,74 @@
             <if test="createDate != null">
                 and create_date = #{createDate}
             </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+        </where>
+    </select>
+    <select id="queryByBook" resultMap="BookMap">
+        select <include refid="columns" />
+        from book
+        <where>
+            <if test="bookId != null">
+                and book_id = #{bookId}
+            </if>
+            <if test="bookNo != null and bookNo != ''">
+                and book_no = #{bookNo}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="author != null and author != ''">
+                and author = #{author}
+            </if>
+            <if test="introduction != null and introduction != ''">
+                and introduction = #{introduction}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="bookId" useGeneratedKeys="true">
-        insert into book(book_no, name, author, type, status, create_date)
-        values (#{bookNo}, #{name}, #{author}, #{type}, #{status}, #{createDate})
+        insert into book(<include refid="columns_no_key"/>)
+        values (#{bookNo}, #{name}, #{author}, #{introduction} #{type}, #{status}, #{createDate}, #{userId})
     </insert>
 
     <insert id="insertBatch" keyProperty="bookId" useGeneratedKeys="true">
-        insert into book(book_no, name, author, type, status, create_date)
+        insert into book(<include refid="columns_no_key"/>)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.bookNo}, #{entity.name}, #{entity.author}, #{entity.type}, #{entity.status}, #{entity.createDate})
+        (#{entity.bookNo}, #{entity.name}, #{entity.author}, #{entity.introduction} #{entity.type}, #{entity.status}, #{entity.createDate}, #{entity.userId})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="bookId" useGeneratedKeys="true">
-        insert into book(book_no, name, author, type, status, create_date)
+        insert into book(<include refid="columns_no_key"/>)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.bookNo}, #{entity.name}, #{entity.author}, #{entity.type}, #{entity.status}, #{entity.createDate})
+            (#{entity.bookNo}, #{entity.name}, #{entity.author}, #{entity.introduction} #{entity.type}, #{entity.status}, #{entity.createDate}, #{entity.userId})
         </foreach>
         on duplicate key update
         book_no = values(book_no),
         name = values(name),
         author = values(author),
+        introduction = values(introduction)
         type = values(type),
         status = values(status),
         create_date = values(create_date)
+        user_id = values(user_id)
     </insert>
 
     <!--通过主键修改数据-->
@@ -152,6 +215,9 @@
             <if test="author != null and author != ''">
                 author = #{author},
             </if>
+            <if test="introduction != null and introduction != ''">
+                and introduction = #{introduction}
+            </if>
             <if test="type != null">
                 type = #{type},
             </if>
@@ -160,6 +226,9 @@
             </if>
             <if test="createDate != null">
                 create_date = #{createDate},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
             </if>
         </set>
         where book_id = #{bookId}

@@ -1,7 +1,6 @@
 import axios from 'axios'
 import router from '../router';
 import store from '../store'
-import QS from 'qs'
 import { ElMessage } from "element-plus";
 
 const request = axios.create({
@@ -19,18 +18,28 @@ request.interceptors.request.use(
 
 request.interceptors.response.use(
     response => {
-        if(response.data.code === 200) {
-            return Promise.resolve(response);
-        } else {
-            ElMessage.error({
-                message: response.data.msg,
-                type: "error"
-            });
+        switch (response.data.code) {
+            case 200:
+                return Promise.resolve(response);
+            case 401:
+                let path: any = router.currentRoute.value
+                router.replace({
+                    path: '/login',
+                    query: {
+                        redirect: path
+                    }
+                });
+                break;
+            default:
+                ElMessage.error({
+                    message: response.data.msg,
+                    type: "error"
+                });
+                break;
         }
     },
     error => {
         if (error.response.status) {
-            console.log(router.currentRoute)
             let path: any = router.currentRoute.value
             switch (error.response.status) {
                 case 401:

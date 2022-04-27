@@ -8,32 +8,23 @@
       />
     </router-link>
     <el-menu mode="horizontal" class="left-menu fl" router="true">
-      <el-sub-menu index="1">
-        <template #title><span class="menu-font">书与人</span></template>
-        <el-menu-item index="1-1">
-          <span class="menu-font">Book Map</span>
-        </el-menu-item>
-        <el-menu-item index="1-2">
-          <span class="menu-font">搜寻</span>
-        </el-menu-item>
-        <el-menu-item index="1-3">
-          <span class="menu-font">猎书</span>
-        </el-menu-item>
-        <el-menu-item index="1-4">
-          <span class="menu-font">会员</span>
-        </el-menu-item>
-      </el-sub-menu>
-      <el-menu-item index="2">
+      <el-menu-item index="/main">
+        <span class="menu-font">书与人</span>
+      </el-menu-item>
+      <el-menu-item index="/main">
         <span class="menu-font">公告</span>
       </el-menu-item>
-      <el-menu-item index="3">
+      <el-menu-item index="/main">
         <span class="menu-font">新闻</span>
       </el-menu-item>
     </el-menu>
-    <div class="fr" style="padding-top: 6px">
+    <div v-if="loginStatus" class="fr" style="padding-top: 6px">
+      <el-button type="success" @click="goUser">个人中心</el-button>
+    </div>
+    <el-space v-else class="fr" style="padding-top: 6px">
       <el-button @click="goRegister">注册</el-button>
       <el-button type="primary" @click="goLogin">登录</el-button>
-    </div>
+    </el-space>
   </div>
 </template>
 
@@ -48,10 +39,19 @@ import { Options, Vue } from "vue-class-component";
   },
   methods: {
     goRegister() {
-      this.$router.push("register")
+      this.$router.push("register");
     },
     goLogin() {
-      this.$router.push("login")
+      this.$router.push("login");
+    },
+    goUser() {
+      this.$router.push("user");
+    }
+  },
+  computed: {
+    loginStatus: function () {
+      let token = localStorage.getItem("token");
+      return this.$store.getters.getLoginStatus || (token != null && token != "");
     }
   }
 })

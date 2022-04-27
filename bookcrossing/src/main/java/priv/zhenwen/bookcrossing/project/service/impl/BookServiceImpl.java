@@ -1,14 +1,18 @@
 package priv.zhenwen.bookcrossing.project.service.impl;
 
-import priv.zhenwen.bookcrossing.project.entity.Book;
-import priv.zhenwen.bookcrossing.project.mapper.BookMapper;
-import priv.zhenwen.bookcrossing.project.service.BookService;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import priv.zhenwen.bookcrossing.common.util.StringUtils;
+import priv.zhenwen.bookcrossing.framework.security.service.LoginService;
+import priv.zhenwen.bookcrossing.project.entity.Book;
+import priv.zhenwen.bookcrossing.project.mapper.BookMapper;
+import priv.zhenwen.bookcrossing.project.service.BookService;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +25,9 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
     @Resource
     private BookMapper bookMapper;
+
+    @Autowired
+    LoginService loginService;
 
     /**
      * 通过ID查询单条数据
@@ -66,6 +73,14 @@ public class BookServiceImpl implements BookService {
      */
     @Override
     public Book insert(Book book) {
+        if (StringUtils.isNull(book.getUserId())) {
+            book.setUserId(loginService.getUserId());
+        }
+        if (StringUtils.isEmpty(book.getStatus())) {
+            book.setStatus("1");
+        }
+        book.setCreateDate(new Date());
+
         this.bookMapper.insert(book);
         return book;
     }
@@ -91,5 +106,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public boolean deleteById(Long bookId) {
         return this.bookMapper.deleteById(bookId) > 0;
+    }
+
+    @Override
+    public Book queryByBook(Book book) {
+        return this.bookMapper.queryByBook(book);
     }
 }

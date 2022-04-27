@@ -1,14 +1,18 @@
 package priv.zhenwen.bookcrossing.project.service.impl;
 
-import priv.zhenwen.bookcrossing.project.entity.Comment;
-import priv.zhenwen.bookcrossing.project.mapper.CommentMapper;
-import priv.zhenwen.bookcrossing.project.service.CommentService;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import priv.zhenwen.bookcrossing.common.util.StringUtils;
+import priv.zhenwen.bookcrossing.framework.security.service.LoginService;
+import priv.zhenwen.bookcrossing.project.entity.Comment;
+import priv.zhenwen.bookcrossing.project.mapper.CommentMapper;
+import priv.zhenwen.bookcrossing.project.service.CommentService;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +25,9 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     @Resource
     private CommentMapper commentMapper;
+
+    @Autowired
+    LoginService loginService;
 
     /**
      * 通过ID查询单条数据
@@ -66,6 +73,12 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public Comment insert(Comment comment) {
+        comment.setCreateDate(new Date());
+
+        if (StringUtils.isNull(comment.getUserId()) || comment.getUserId() == 0) {
+            comment.setUserId(loginService.getUserId());
+        }
+
         this.commentMapper.insert(comment);
         return comment;
     }

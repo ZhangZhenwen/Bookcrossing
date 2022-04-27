@@ -1,5 +1,4 @@
 import request, {get, post, put, del} from "@/request/http";
-import url from "@/request/url"
 
 /**
  * @author zhenwen
@@ -12,6 +11,4 @@ export default {
     post,
     put,
     del,
-
-    url,
 }

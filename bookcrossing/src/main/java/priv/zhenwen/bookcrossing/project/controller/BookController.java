@@ -47,6 +47,17 @@ public class BookController {
     }
 
     /**
+     * 通过属性查询单条数据
+     *
+     * @param book 属性
+     * @return 单条数据
+     */
+    @GetMapping("/get")
+    public AjaxResult queryByBook(Book book) {
+        return AjaxResult.ok(this.bookService.queryByBook(book));
+    }
+
+    /**
      * 新增数据
      *
      * @param book 实体

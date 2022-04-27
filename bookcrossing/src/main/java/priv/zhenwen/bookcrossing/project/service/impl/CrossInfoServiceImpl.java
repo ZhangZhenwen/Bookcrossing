@@ -1,14 +1,24 @@
 package priv.zhenwen.bookcrossing.project.service.impl;
 
-import priv.zhenwen.bookcrossing.project.entity.CrossInfo;
-import priv.zhenwen.bookcrossing.project.mapper.CrossInfoMapper;
-import priv.zhenwen.bookcrossing.project.service.CrossInfoService;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import priv.zhenwen.bookcrossing.common.constant.CrossInfoStatus;
+import priv.zhenwen.bookcrossing.framework.security.service.LoginService;
+import priv.zhenwen.bookcrossing.project.entity.Book;
+import priv.zhenwen.bookcrossing.project.entity.CrossInfo;
+import priv.zhenwen.bookcrossing.project.entity.User;
+import priv.zhenwen.bookcrossing.project.entity.vo.ApplyVo;
+import priv.zhenwen.bookcrossing.project.mapper.CrossInfoMapper;
+import priv.zhenwen.bookcrossing.project.service.BookService;
+import priv.zhenwen.bookcrossing.project.service.CrossInfoService;
+import priv.zhenwen.bookcrossing.project.service.UserService;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +31,15 @@ import java.util.List;
 public class CrossInfoServiceImpl implements CrossInfoService {
     @Resource
     private CrossInfoMapper crossInfoMapper;
+
+    @Autowired
+    private LoginService loginService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private BookService bookService;
 
     /**
      * 通过ID查询单条数据
@@ -59,6 +78,37 @@ public class CrossInfoServiceImpl implements CrossInfoService {
     }
 
     /**
+     * 查询申请列表
+     *
+     * @return 查询结果
+     */
+    @Override
+    public Page<ApplyVo> queryForApply() {
+        Long userId = this.loginService.getUserId();
+
+        Book queryBook = new Book();
+        queryBook.setUserId(userId);
+        List<Book> bookList = bookService.queryAll(queryBook);
+
+        List<ApplyVo> applyVos = new ArrayList<>();
+
+        for (Book book : bookList) {
+            CrossInfo queryInfo = new CrossInfo();
+            queryInfo.setBookId(book.getBookId());
+            queryInfo.setStatus(CrossInfoStatus.APPLY);
+
+            for (CrossInfo info : queryAll(queryInfo)) {
+                User target = userService.queryById(info.getUserId());
+                ApplyVo applyVo = new ApplyVo(book, target, info);
+                applyVos.add(applyVo);
+            }
+
+        }
+
+        return new PageImpl<>(applyVos);
+    }
+
+    /**
      * 新增数据
      *
      * @param crossInfo 实例对象
@@ -78,6 +128,7 @@ public class CrossInfoServiceImpl implements CrossInfoService {
      */
     @Override
     public CrossInfo update(CrossInfo crossInfo) {
+        crossInfo.setUpdateDate(new Date());
         this.crossInfoMapper.update(crossInfo);
         return this.queryById(crossInfo.getCrossInfoId());
     }
@@ -91,5 +142,70 @@ public class CrossInfoServiceImpl implements CrossInfoService {
     @Override
     public boolean deleteById(Long crossInfoId) {
         return this.crossInfoMapper.deleteById(crossInfoId) > 0;
+    }
+
+    /**
+     * 处理漂流请求
+     * @param crossInfo 漂流请求
+     * @return 是否成功
+     */
+    @Override
+    public boolean handleCrossing(CrossInfo crossInfo) {
+        crossInfo.setStatus("1");
+        crossInfo.setType("0");
+        crossInfo.setCreateDate(new Date());
+        crossInfo.setUpdateDate(new Date());
+
+        Long userId = loginService.getUserId();
+
+        crossInfo.setUserId(userId);
+
+        return this.crossInfoMapper.insert(crossInfo) > 0;
+    }
+
+    /**
+     * 是否正在申请漂流
+     *
+     * @param crossInfo 漂流申请
+     * @return 漂流申请
+     */
+    @Override
+    public boolean isApplying(CrossInfo crossInfo) {
+        Long userId = loginService.getUserId();
+
+        crossInfo.setStatus("1");
+        crossInfo.setUserId(userId);
+
+        return !this.crossInfoMapper.queryAll(crossInfo).isEmpty();
+    }
+
+    @Override
+    public boolean agree(ApplyVo applyVo) {
+        Book book = bookService.queryById(applyVo.getBookId());
+        CrossInfo crossInfo = queryById(applyVo.getCrossInfoId());
+        crossInfo.setStatus("4");
+        update(crossInfo);
+
+        book.setStatus("1");
+        book.setUserId(applyVo.getUserId());
+        bookService.update(book);
+
+        return true;
+    }
+
+    /**
+     * 拒绝漂流请求
+     *
+     * @param applyVo 漂流请求
+     * @return 是否拒绝成功
+     */
+    @Override
+    public boolean refuse(ApplyVo applyVo) {
+        CrossInfo crossInfo = queryById(applyVo.getCrossInfoId());
+
+        crossInfo.setStatus("0");
+        update(crossInfo);
+
+        return true;
     }
 }

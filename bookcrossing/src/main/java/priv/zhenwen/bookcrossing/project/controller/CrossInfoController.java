@@ -1,6 +1,7 @@
 package priv.zhenwen.bookcrossing.project.controller;
 
 import priv.zhenwen.bookcrossing.project.entity.CrossInfo;
+import priv.zhenwen.bookcrossing.project.entity.vo.ApplyVo;
 import priv.zhenwen.bookcrossing.project.service.CrossInfoService;
 import priv.zhenwen.bookcrossing.framework.web.domain.AjaxResult;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +37,16 @@ public class CrossInfoController {
     }
 
     /**
+     * 查询请求列表
+     *
+     * @return 查询结果
+     */
+    @GetMapping("/applyList")
+    public AjaxResult queryForApply() {
+        return AjaxResult.ok(this.crossInfoService.queryForApply());
+    }
+
+    /**
      * 通过主键查询单条数据
      *
      * @param id 主键
@@ -44,6 +55,50 @@ public class CrossInfoController {
     @GetMapping("{id}")
     public AjaxResult queryById(@PathVariable("id") Long id) {
         return AjaxResult.ok(this.crossInfoService.queryById(id));
+    }
+
+    /**
+     * 处理漂流请求
+     *
+     * @param crossInfo 漂流请求
+     * @return 是否成功
+     */
+    @PostMapping("/handle")
+    public AjaxResult handleCrossing(@RequestBody CrossInfo crossInfo) {
+        return AjaxResult.ok(this.crossInfoService.handleCrossing(crossInfo));
+    }
+
+    /**
+     * 是否正在漂流图书
+     *
+     * @param crossInfo 漂流请求
+     * @return 是否正在漂流
+     */
+    @PostMapping("/checkApply")
+    public AjaxResult isApplying(@RequestBody CrossInfo crossInfo) {
+        return AjaxResult.ok(this.crossInfoService.isApplying(crossInfo));
+    }
+
+    /**
+     * 同意图书漂流申请
+     *
+     * @param applyVo 漂流申请
+     * @return 是否拒绝成功
+     */
+    @PostMapping("/agree")
+    public AjaxResult agree(@RequestBody ApplyVo applyVo) {
+        return AjaxResult.ok(this.crossInfoService.agree(applyVo));
+    }
+
+    /**
+     * 拒绝图书漂流申请
+     *
+     * @param applyVo 漂流申请
+     * @return 是否拒绝成功
+     */
+    @PostMapping("/refuse")
+    public AjaxResult refuse(@RequestBody ApplyVo applyVo) {
+        return AjaxResult.ok(this.crossInfoService.refuse(applyVo));
     }
 
     /**

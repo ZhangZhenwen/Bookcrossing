@@ -28,6 +28,10 @@ public class Book implements Serializable {
      */
     private String author;
     /**
+     * 图书简介
+     */
+    private String introduction;
+    /**
      * 图书类型
      */
     private Long type;
@@ -40,6 +44,10 @@ public class Book implements Serializable {
      */
     private Date createDate;
 
+    /**
+     * 拥有者用户ID
+     */
+    private Long userId;
 
     public Long getBookId() {
         return bookId;
@@ -73,6 +81,14 @@ public class Book implements Serializable {
         this.author = author;
     }
 
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
     public Long getType() {
         return type;
     }
@@ -97,5 +113,12 @@ public class Book implements Serializable {
         this.createDate = createDate;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 }
 

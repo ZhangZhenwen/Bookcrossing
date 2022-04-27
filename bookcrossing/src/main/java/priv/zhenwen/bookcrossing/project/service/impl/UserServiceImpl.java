@@ -132,7 +132,7 @@ public class UserServiceImpl implements UserService {
         String newPassword = passwordEncoder.encode(rawPassword);
         user.setPassword(newPassword);
 
-        user.setStatus(UserStatus.REVIEW);
+        user.setStatus(UserStatus.APPROVED);
         user.setType(UserStatus.USER);
 
         this.userMapper.insert(user);

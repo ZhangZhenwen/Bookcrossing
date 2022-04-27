@@ -88,5 +88,12 @@ public interface BookMapper {
      */
     int deleteById(Long bookId);
 
+    /**
+     * 通过属性你查询单条数据
+     *
+     * @param book 属性
+     * @return 单条数据
+     */
+    Book queryByBook(Book book);
 }
 

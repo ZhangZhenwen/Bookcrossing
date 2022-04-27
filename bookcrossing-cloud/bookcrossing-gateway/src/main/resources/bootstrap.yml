@@ -1,0 +1,19 @@
+server:
+  # 网关端口
+  port: 8080
+
+spring:
+  application:
+    # 服务名称
+    name: gateway
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+    gateway:
+      routes:
+        - id:
+          # 路由目标地址，服务名称
+          url: lb://
+          # 路由断言：判断请求是否符合路由规则的条件
+          predicates:
+            - Path=

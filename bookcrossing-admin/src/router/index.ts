@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Index from "@/views/Index.vue";
-import Announcement from "@/views/Announcement.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -36,6 +35,12 @@ const routes: Array<RouteRecordRaw> = [
         path: "bookType",
         name: "BookType",
         component: () => import("@/views/BookType.vue"),
+        props: true,
+      },
+      {
+        path: "book",
+        name: "Book",
+        component: () => import("@/views/Book.vue"),
         props: true,
       },
     ],

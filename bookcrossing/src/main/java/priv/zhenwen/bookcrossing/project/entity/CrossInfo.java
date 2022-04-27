@@ -18,7 +18,7 @@ public class CrossInfo implements Serializable {
     /**
      * 图书ID
      */
-    private Integer bookId;
+    private Long bookId;
     /**
      * 备注信息
      */
@@ -28,7 +28,7 @@ public class CrossInfo implements Serializable {
      */
     private String type;
     /**
-     * 漂流状态（1：申请中、2：申请成功、3：漂流中、4：已完成）
+     * 漂流状态（0：已拒绝、1：申请中、2：申请成功、3：漂流中、4：已完成）
      */
     private String status;
     /**
@@ -42,7 +42,7 @@ public class CrossInfo implements Serializable {
     /**
      * 用户ID
      */
-    private Integer userId;
+    private Long userId;
 
 
     public Long getCrossInfoId() {
@@ -53,11 +53,11 @@ public class CrossInfo implements Serializable {
         this.crossInfoId = crossInfoId;
     }
 
-    public Integer getBookId() {
+    public Long getBookId() {
         return bookId;
     }
 
-    public void setBookId(Integer bookId) {
+    public void setBookId(Long bookId) {
         this.bookId = bookId;
     }
 
@@ -101,11 +101,11 @@ public class CrossInfo implements Serializable {
         this.updateDate = updateDate;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

@@ -63,4 +63,11 @@ public interface BookService {
      */
     boolean deleteById(Long bookId);
 
+    /**
+     * 通过属性查询单条数据
+     *
+     * @param book 属性
+     * @return 实例对象
+     */
+    Book queryByBook(Book book);
 }

@@ -2,19 +2,19 @@
   <div id="main" class="container-fluid">
     <div id="home-splash">
       <div id="found-a-book" class="text-center"></div>
-      <h1 class="text-center">歡迎蒞臨世界的圖書館！</h1>
+      <h1 class="text-center">欢迎莅临世界的图书馆！</h1>
       <div id="endorsements" class="row">
         <div class="col">
           <ul>
-            <li><em>愛書，就讓它走</em>－－《紐約時報》</li>
-            <li><em>一個難以置信的全球性社會學實驗</em>－－《愛書雜誌》</li>
-            <li><em>現代版瓶中信</em>－－《三藩市（舊金山）紀事報》</li>
+            <li><em>爱书，就让它走</em>－－《纽约时报》</li>
+            <li><em>一个难以置信的全球性社会学实验</em>－－《爱书杂志》</li>
+            <li><em>现代版瓶中信</em>－－《三藩市（旧金山）纪事报》</li>
           </ul>
         </div>
       </div>
       <div id="home-lede" class="row">
         <div class="col-sm-12 col-md-10 offset-md-1">
-          尋找書籍、分享書本、遇見愛書同好，是如此地簡單。
+          寻找书籍、分享书本、遇见爱书同好，是如此地简单。
         </div>
       </div>
       <div class="container-fluid">
@@ -22,25 +22,25 @@
           <div class="col-sm-12 col-md-10 offset-md-1">
             <div class="row">
               <div class="col-lg-4">
-                <a
-                  href="/about"
+                <router-link
+                  to="/"
                   class="btn btn-outline-primary btn-lg btn-block my-2"
-                  >關於我們</a
+                  >关于我們</router-link
                 >
               </div>
               <div class="col-lg-4">
-                <a
-                  href="/howto"
+                <router-link
+                  to="/main"
                   class="btn btn-outline-primary btn-lg btn-block my-2"
-                  >如何書遊</a
+                  >如何书游</router-link
                 >
               </div>
               <div class="col-lg-4">
-                <a
-                  href="/register"
+                <router-link
+                  to="/register"
                   class="btn btn-outline-primary btn-lg btn-block my-2"
-                  >註冊 <i class="fas fa-smile-beam"></i
-                ></a>
+                  >注册 <i class="fas fa-smile-beam"></i
+                ></router-link>
               </div>
             </div>
           </div>

@@ -2,7 +2,7 @@
   <div id="main" class="container">
     <!-- Membership:Join -->
     <div class="row">
-      <div id="content" class="col-sm-12 col-lg-9">
+      <div id="content">
         <h1>加入書遊記</h1>
         <p>
           <strong

@@ -28,9 +28,10 @@
 </template>
 
 <script lang="ts">
-import { ref, unref, inject, reactive } from "vue";
+import { ref, unref, inject } from "vue";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 interface LoginForm {
   password: string;
@@ -43,6 +44,7 @@ export default {
 
   setup() {
     const router = useRouter();
+    const store = useStore();
     const api: any = inject("$api");
     const form = ref<LoginForm>({
       email: "",
@@ -71,7 +73,8 @@ export default {
         await validate.validate();
         api.post("/login", form.value).then((res: any) => {
           console.log(res);
-          localStorage.setItem("token", res.token)
+          localStorage.setItem("token", res.token);
+          store.commit("setLoginStatus", true);
           ElMessage.success({
             message: res.msg,
             type: "success",

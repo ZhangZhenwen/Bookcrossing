@@ -1,5 +1,5 @@
 <template>
-  <el-table ref="table" :data="data">
+  <el-table ref="table" :data="data" class="main-table">
     <el-table-column type="selection" />
     <el-table-column prop="username" label="用户名" />
     <el-table-column prop="email" label="邮箱" />
@@ -15,6 +15,11 @@
       </template>
     </el-table-column>
   </el-table>
+
+  <el-pagination background layout="prev, pager, next"
+                 @update:current-page="getList"
+                 :page-count="pageCount"
+                 :page-size="10"/>
 
   <el-dialog title="用户" width="500px" v-model="formVisible">
     <el-form :model="formData">
@@ -67,13 +72,25 @@ export default {
 
   setup(props: { url: string }) {
     const formVisible = ref(false);
-    const formData = ref<User>();
+    const formData = ref<User>({
+      userId: 0,
+      username: "",
+      password: "",
+      email: "",
+      tel: "",
+      type: "",
+      status: ""
+    });
     const api: any = inject("$api");
 
+    let pageCount = ref();
     const data = ref();
-    const getList = () => {
-      api.get(props.url + "/list").then((res: AjaxResult<PageData<User>>) => {
-        data.value = res.data.content;
+
+    const getList = (page: number) => {
+      api.get(props.url + "/list", {page: page, size: 10})
+          .then((res: AjaxResult<PageData<User>>) => {
+            data.value = res.data.content;
+            pageCount.value = res.data.totalPages;
       });
     };
 
@@ -98,7 +115,7 @@ export default {
               });
             });
 
-          getList();
+          getList(1);
         })
         .catch(() => {
           ElMessage.info({
@@ -120,17 +137,19 @@ export default {
           });
         });
 
-      getList();
+      getList(1);
     };
 
     onMounted(() => {
-      getList();
+      getList(1);
     });
 
     return {
       data,
+      pageCount,
       formVisible,
       formData,
+      getList,
       handleEdit,
       handleDelete,
       handleSubmit,
