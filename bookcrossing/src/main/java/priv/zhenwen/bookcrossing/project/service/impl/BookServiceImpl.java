@@ -8,12 +8,15 @@ import org.springframework.stereotype.Service;
 import priv.zhenwen.bookcrossing.common.util.StringUtils;
 import priv.zhenwen.bookcrossing.framework.security.service.LoginService;
 import priv.zhenwen.bookcrossing.project.entity.Book;
+import priv.zhenwen.bookcrossing.project.entity.CrossInfo;
+import priv.zhenwen.bookcrossing.project.entity.vo.BookVO;
 import priv.zhenwen.bookcrossing.project.mapper.BookMapper;
 import priv.zhenwen.bookcrossing.project.service.BookService;
+import priv.zhenwen.bookcrossing.project.service.BookTypeService;
+import priv.zhenwen.bookcrossing.project.service.CrossInfoService;
+import priv.zhenwen.bookcrossing.project.service.UserService;
 
-import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * (Book)表服务实现类
@@ -23,8 +26,17 @@ import java.util.List;
  */
 @Service("bookService")
 public class BookServiceImpl implements BookService {
-    @Resource
+    @Autowired
     private BookMapper bookMapper;
+
+    @Autowired
+    private CrossInfoService crossInfoService;
+
+    @Autowired
+    private BookTypeService bookTypeService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     LoginService loginService;
@@ -80,7 +92,7 @@ public class BookServiceImpl implements BookService {
             book.setStatus("1");
         }
         book.setCreateDate(new Date());
-
+        book.setPdfName(book.getBookNo() + "_" + book.getName() + "_" + book.getBookId());
         this.bookMapper.insert(book);
         return book;
     }
@@ -111,5 +123,51 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book queryByBook(Book book) {
         return this.bookMapper.queryByBook(book);
+    }
+
+    @Override
+    public Book getBookDetail(Long bookId) {
+        Book book = queryById(bookId);
+        Long userId = loginService.getUserId();
+        CrossInfo crossInfo = new CrossInfo();
+
+        crossInfo.setBookId(bookId);
+        crossInfo.setUserId(userId);
+
+        boolean applying = crossInfoService.isApplying(crossInfo);
+
+        if (Objects.equals(userId, book.getUserId())) {
+            book.setStatus("3");
+        } else if (applying) {
+            book.setStatus("4");
+        }
+
+        return book;
+    }
+
+    @Override
+    public Page<BookVO> getBookVOList(Book book, Pageable pageRequest) {
+        Page<Book> bookPage = queryByPage(book, pageRequest);
+        Iterator<Book> iterator = bookPage.iterator();
+        long total = this.bookMapper.count(book);
+        List<BookVO> bookVOs = new ArrayList<>();
+        while (iterator.hasNext()) {
+            Book item = iterator.next();
+            String type = bookTypeService.queryById(item.getType()).getTypeName();
+            String status = item.getStatus();
+            switch (status) {
+                case "1":
+                    status = "可漂流";
+                    break;
+                case "2":
+                    status = "已漂流";
+                    break;
+            }
+            String username = userService.queryById(item.getUserId()).getUsername();
+            BookVO bookVO = new BookVO(item, type, status, username);
+            bookVOs.add(bookVO);
+        }
+
+        return new PageImpl<>(bookVOs, pageRequest, total);
     }
 }

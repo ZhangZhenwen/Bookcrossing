@@ -7,7 +7,7 @@ application:
   # 项目版本
   version: 1.0.0
   # 上传文件的路径
-  profile: /Users/zhenwen/MyProjects/ClassPle-Vue/classple/file
+  profile: D:\MyProjects\Bookcrossing\bookcrossing\profile
 
 # Spring配置
 spring:
@@ -37,7 +37,7 @@ spring:
         one-indexed-parameters: true
   # JSON设置
   jackson:
-    # date-format: yyyy-MM-dd HH:mm:ss
+    date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   # 国际化设置
   messages:
@@ -74,8 +74,8 @@ token:
   header: Authorization
   # 令牌密钥
   secret: abcdefghijklmnopqrstuvwxyz
-  # 令牌有效期（默认30分钟）
-  expireTime: 30
+  # 令牌有效期（默认300分钟）
+  expireTime: 300
 
 #pagehelper分页插件配置
 pagehelper:

@@ -35,6 +35,11 @@ public class CommentController {
         return AjaxResult.ok(this.commentService.queryByPage(comment, pageRequest));
     }
 
+    @GetMapping("/vo")
+    public AjaxResult queryCommentVOPage(Comment comment, Pageable pageable) {
+        return AjaxResult.ok(this.commentService.queryCommentVOPage(comment, pageable));
+    }
+
     /**
      * 通过主键查询单条数据
      *
@@ -63,7 +68,7 @@ public class CommentController {
      * @param comment 实体
      * @return 编辑结果
      */
-    @PutMapping("/edit")
+    @PostMapping("/edit")
     public AjaxResult edit(@RequestBody Comment comment) {
         return AjaxResult.ok(this.commentService.update(comment));
     }
@@ -74,8 +79,8 @@ public class CommentController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping("/delete/{id}")
-    public AjaxResult deleteById(@PathVariable Long id) {
+    @PostMapping("/delete")
+    public AjaxResult deleteById(@RequestBody Long id) {
         return AjaxResult.ok(this.commentService.deleteById(id));
     }
 

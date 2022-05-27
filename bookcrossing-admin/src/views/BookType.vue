@@ -33,6 +33,8 @@
           v-model="formData.createDate"
           type="datetime"
           placeholder="选择创建时间"
+          format="YYYY/MM/DD hh:mm:ss"
+          value-format="YYYY-MM-DD hh:mm:ss"
         />
       </el-form-item>
     </el-form>
@@ -60,11 +62,8 @@ interface BookType {
 
 export default {
   name: "DataTable",
-  props: {
-    url: String,
-  },
 
-  setup(props: { url: string }) {
+  setup() {
     const formVisible = ref(false);
     let formFunc = "";
     let pageCount = ref();
@@ -79,7 +78,7 @@ export default {
     const data = ref();
     const getList = (page: number) => {
       api
-        .get(props.url + "/list", {page: page, size: 10})
+        .get("/bookType/list", {page: page, size: 10})
         .then((res: AjaxResult<PageData<BookType>>) => {
           data.value = res.data.content;
           pageCount.value = res.data.totalPages;
@@ -111,15 +110,15 @@ export default {
       })
         .then(() => {
           api
-            .del(props.url + "/delete", row.bookTypeId)
+            .post("/bookType/delete", row.bookTypeId)
             .then((res: AjaxResult<object>) => {
               ElMessage.success({
                 type: "success",
                 message: res.msg,
               });
-            });
 
-          getList(1);
+              getList(1);
+            });
         })
         .catch(() => {
           ElMessage.info({
@@ -135,27 +134,29 @@ export default {
       switch (formFunc) {
         case "add":
           api
-            .post(props.url + "/add", formData.value)
+            .post("/bookType/add", formData.value)
             .then((res: AjaxResult<string>) => {
               ElMessage.success({
                 type: "success",
                 message: res.msg,
               });
+
+              getList(1);
             });
           break;
         case "edit":
           api
-            .put(props.url + "/edit", formData.value)
+            .post("/bookType/edit", formData.value)
             .then((res: AjaxResult<string>) => {
               ElMessage.success({
                 type: "success",
                 message: res.msg,
               });
+
+              getList(1);
             });
           break;
       }
-
-      getList(1);
     };
 
     onMounted(() => {

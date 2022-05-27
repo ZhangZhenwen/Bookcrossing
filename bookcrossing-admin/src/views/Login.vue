@@ -36,7 +36,6 @@ interface LoginForm {
 
 export default {
   name: "Login",
-  props: {},
 
   setup() {
     const router = useRouter();

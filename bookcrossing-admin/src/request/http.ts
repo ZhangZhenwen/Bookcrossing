@@ -96,26 +96,4 @@ export function post(url: string, params: object) {
     })
 }
 
-export function put(url: string, params: object) {
-    return new Promise((resolve, reject) => {
-        request.put(url, JSON.stringify(params))
-            .then(res => {
-                resolve(res.data);
-            }).catch(err => {
-            reject(err.data)
-        })
-    })
-}
-
-export function del(url: string, params: object) {
-    return new Promise((resolve, reject) => {
-        request.delete(url, {data: JSON.stringify(params)})
-            .then(res => {
-                resolve(res.data);
-            }).catch(err => {
-            reject(err.data)
-        })
-    })
-}
-
 export default request

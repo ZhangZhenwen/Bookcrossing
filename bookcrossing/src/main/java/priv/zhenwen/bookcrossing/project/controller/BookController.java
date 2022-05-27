@@ -35,6 +35,11 @@ public class BookController {
         return AjaxResult.ok(this.bookService.queryByPage(book, pageRequest));
     }
 
+    @GetMapping("/vo")
+    public AjaxResult queryVOByPage(Book book, Pageable pageable) {
+        return AjaxResult.ok(this.bookService.getBookVOList(book, pageable));
+    }
+
     /**
      * 通过主键查询单条数据
      *
@@ -44,6 +49,11 @@ public class BookController {
     @GetMapping("{id}")
     public AjaxResult queryById(@PathVariable("id") Long id) {
         return AjaxResult.ok(this.bookService.queryById(id));
+    }
+
+    @GetMapping("/detail")
+    public AjaxResult getBookDetailVo(Long id) {
+        return AjaxResult.ok(this.bookService.getBookDetail(id));
     }
 
     /**
@@ -74,7 +84,7 @@ public class BookController {
      * @param book 实体
      * @return 编辑结果
      */
-    @PutMapping("/edit")
+    @PostMapping("/edit")
     public AjaxResult edit(@RequestBody Book book) {
         return AjaxResult.ok(this.bookService.update(book));
     }
@@ -85,10 +95,9 @@ public class BookController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping("/delete/{id}")
-    public AjaxResult deleteById(@PathVariable Long id) {
+    @PostMapping("/delete")
+    public AjaxResult deleteById(@RequestBody Long id) {
         return AjaxResult.ok(this.bookService.deleteById(id));
     }
-
 }
 

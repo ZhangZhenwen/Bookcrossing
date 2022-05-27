@@ -7,7 +7,7 @@
     <el-table-column prop="type" label="图书类型" />
     <el-table-column prop="status" label="图书状态" />
     <el-table-column prop="createDate" label="创建时间" />
-    <el-table-column prop="userId" label="拥有者" />
+    <el-table-column prop="username" label="拥有者" />
     <el-table-column label="操作">
       <template #header>
         <el-button type="success" @click="handleAdd"> 添加 </el-button>
@@ -36,19 +36,35 @@
         <el-input v-model="formData.author" />
       </el-form-item>
       <el-form-item label="图书类型">
-        <el-input v-model="formData.type" />
+        <el-select v-model="formData.type">
+          <el-option
+              v-for="item in bookTypes"
+              :key="item.bookTypeId"
+              :label="item.typeName"
+              :value="item.bookTypeId">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="图书状态">
-        <el-input v-model="formData.status" />
+        <el-select v-model="formData.status">
+          <el-option
+              v-for="item in bookStatus"
+              :key="item.statusId"
+              :label="item.statusName"
+              :value="item.statusId">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker
             v-model="formData.createDate"
             type="datetime"
             placeholder="选择创建时间"
+            format="YYYY/MM/DD hh:mm:ss"
+            value-format="YYYY-MM-DD hh:mm:ss"
         />
       </el-form-item>
-      <el-form-item label="拥有者">
+      <el-form-item label="用户ID">
         <el-input v-model="formData.userId" />
       </el-form-item>
     </el-form>
@@ -68,6 +84,13 @@ import { ref, inject, onMounted } from "vue";
 import { ElMessageBox, ElMessage } from "element-plus";
 import { AjaxResult, PageData } from "@/assets";
 
+interface BookType {
+  bookTypeId: Number;
+  typeCode: String;
+  typeName: String;
+  createDate: String;
+}
+
 interface Book {
   bookId: Number;
   bookNo: String;
@@ -81,14 +104,11 @@ interface Book {
 
 export default {
   name: "Book",
-  props: {
-    url: String,
-  },
 
-  setup(props: { url: string }) {
+  setup() {
     const formVisible = ref(false);
     let formFunc = "";
-    let pageCount = ref();
+    const pageCount = ref();
     const formData = ref<Book>({
       bookId: 0,
       bookNo: " ",
@@ -100,14 +120,27 @@ export default {
       userId: 0
     });
     const api: any = inject("$api");
+    const bookStatus = [
+        {"statusId": "0", "statusName": "上传中"},
+        {"statusId": "1", "statusName": "可漂流"},
+        {"statusId": "2", "statusName": "已漂流"}];
+    const bookTypes = ref();
 
     const data = ref();
     const getList = (page: number) => {
       api
-          .get(props.url + "/list", {page: page, size: 10})
+          .get("/book/vo", {page: page, size: 10})
           .then((res: AjaxResult<PageData<Book>>) => {
             data.value = res.data.content;
             pageCount.value = res.data.totalPages;
+          });
+    };
+
+    const getBookTypes = () => {
+      api
+          .get("bookType/list")
+          .then((res: AjaxResult<PageData<BookType>>) => {
+            bookTypes.value = res.data.content;
           });
     };
 
@@ -140,15 +173,15 @@ export default {
       })
           .then(() => {
             api
-                .del(props.url + "/delete", row.bookId)
+                .post("/book/delete", row.bookId)
                 .then((res: AjaxResult<object>) => {
                   ElMessage.success({
                     type: "success",
                     message: res.msg,
                   });
-                });
 
-            getList(1);
+                  getList(1);
+                });
           })
           .catch(() => {
             ElMessage.info({
@@ -164,31 +197,34 @@ export default {
       switch (formFunc) {
         case "add":
           api
-              .post(props.url + "/add", formData.value)
+              .post("/book/add", formData.value)
               .then((res: AjaxResult<string>) => {
                 ElMessage.success({
                   type: "success",
                   message: res.msg,
                 });
+
+                getList(1);
               });
           break;
         case "edit":
           api
-              .put(props.url + "/edit", formData.value)
+              .post("/book/edit", formData.value)
               .then((res: AjaxResult<string>) => {
                 ElMessage.success({
                   type: "success",
                   message: res.msg,
                 });
+
+                getList(1);
               });
           break;
       }
-
-      getList(1);
     };
 
     onMounted(() => {
       getList(1);
+      getBookTypes();
     });
 
     return {
@@ -196,6 +232,8 @@ export default {
       pageCount,
       formVisible,
       formData,
+      bookTypes,
+      bookStatus,
       getList,
       handleAdd,
       handleEdit,

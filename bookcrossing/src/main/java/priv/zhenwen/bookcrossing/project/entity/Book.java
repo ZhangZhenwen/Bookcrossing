@@ -1,7 +1,7 @@
 package priv.zhenwen.bookcrossing.project.entity;
 
-import java.util.Date;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * (Book)实体类
@@ -36,18 +36,29 @@ public class Book implements Serializable {
      */
     private Long type;
     /**
-     * 图书状态（0：上传中、1：可出借、2：已出借）
+     * 图书状态（0：上传中、1：可漂流、2：已漂流）
      */
     private String status;
     /**
      * 创建时间
      */
+
     private Date createDate;
 
     /**
      * 拥有者用户ID
      */
     private Long userId;
+
+    /**
+     * 电子书名称
+     */
+    private String pdfName;
+
+    /**
+     * 电子书下载路径
+     */
+    private String pdfUrl;
 
     public Long getBookId() {
         return bookId;
@@ -119,6 +130,22 @@ public class Book implements Serializable {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getPdfName() {
+        return pdfName;
+    }
+
+    public void setPdfName(String pdfName) {
+        this.pdfName = pdfName;
+    }
+
+    public String getPdfUrl() {
+        return pdfUrl;
+    }
+
+    public void setPdfUrl(String pdfUrl) {
+        this.pdfUrl = pdfUrl;
     }
 }
 

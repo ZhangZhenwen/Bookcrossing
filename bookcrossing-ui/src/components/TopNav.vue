@@ -8,14 +8,11 @@
       />
     </router-link>
     <el-menu mode="horizontal" class="left-menu fl" router="true">
-      <el-menu-item index="/main">
-        <span class="menu-font">书与人</span>
+      <el-menu-item index="/">
+        <span class="menu-font">首页</span>
       </el-menu-item>
       <el-menu-item index="/main">
-        <span class="menu-font">公告</span>
-      </el-menu-item>
-      <el-menu-item index="/main">
-        <span class="menu-font">新闻</span>
+        <span class="menu-font">图书库</span>
       </el-menu-item>
     </el-menu>
     <div v-if="loginStatus" class="fr" style="padding-top: 6px">

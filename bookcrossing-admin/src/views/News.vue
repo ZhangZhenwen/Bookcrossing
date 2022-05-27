@@ -1,9 +1,9 @@
 <template>
   <el-table ref="table" :data="data" class="main-table">
     <el-table-column type="selection" />
-    <el-table-column prop="title" label="标题" />
-    <el-table-column prop="content" label="内容" />
-    <el-table-column prop="createDate" label="创建时间" />
+    <el-table-column prop="title" label="标题" width="300px" />
+    <el-table-column prop="content" show-overflow-tooltip label="内容" />
+    <el-table-column prop="createDate" label="创建时间" width="300px" />
     <el-table-column label="操作">
       <template #header>
         <el-button type="success" @click="handleAdd"> 添加 </el-button>
@@ -33,6 +33,8 @@
           v-model="formData.createDate"
           type="datetime"
           placeholder="选择创建时间"
+          format="YYYY/MM/DD hh:mm:ss"
+          value-format="YYYY-MM-DD hh:mm:ss"
         />
       </el-form-item>
     </el-form>
@@ -60,11 +62,8 @@ interface News {
 
 export default {
   name: "DataTable",
-  props: {
-    url: String,
-  },
 
-  setup(props: { url: string }) {
+  setup() {
     const formVisible = ref(false);
     let formFunc = "";
     let pageCount = ref();
@@ -79,7 +78,7 @@ export default {
     const data = ref();
     const getList = (page: number) => {
       api
-        .get(props.url + "/list", {page: page, size: 10})
+        .get("/news/list", {page: page, size: 10})
         .then((res: AjaxResult<PageData<News>>) => {
           data.value = res.data.content;
           pageCount.value = res.data.totalPages;
@@ -111,15 +110,15 @@ export default {
       })
         .then(() => {
           api
-            .del(props.url + "/delete", row.newsId)
+            .post("/news/delete", row.newsId)
             .then((res: AjaxResult<object>) => {
               ElMessage.success({
                 type: "success",
                 message: res.msg,
               });
-            });
 
-          getList(1);
+              getList(1);
+            });
         })
         .catch(() => {
           ElMessage.info({
@@ -135,27 +134,29 @@ export default {
       switch (formFunc) {
         case "add":
           api
-            .post(props.url + "/add", formData.value)
+            .post("/news/add", formData.value)
             .then((res: AjaxResult<string>) => {
               ElMessage.success({
                 type: "success",
                 message: res.msg,
               });
+
+              getList(1);
             });
           break;
         case "edit":
           api
-            .put(props.url + "/edit", formData.value)
+            .post("/news/edit", formData.value)
             .then((res: AjaxResult<string>) => {
               ElMessage.success({
                 type: "success",
                 message: res.msg,
               });
+
+              getList(1);
             });
           break;
       }
-
-      getList(1);
     };
 
     onMounted(() => {

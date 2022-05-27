@@ -63,7 +63,7 @@ public class AnnouncementController {
      * @param announcement 实体
      * @return 编辑结果
      */
-    @PutMapping("/edit")
+    @PostMapping("/edit")
     public AjaxResult edit(@RequestBody Announcement announcement) {
         return AjaxResult.ok(this.announcementService.update(announcement));
     }
@@ -74,7 +74,7 @@ public class AnnouncementController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public AjaxResult deleteById(@RequestBody Long id) {
         return AjaxResult.ok(this.announcementService.deleteById(id));
     }

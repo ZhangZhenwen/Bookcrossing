@@ -1,8 +1,9 @@
 package priv.zhenwen.bookcrossing.project.service;
 
-import priv.zhenwen.bookcrossing.project.entity.Comment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import priv.zhenwen.bookcrossing.project.entity.Comment;
+import priv.zhenwen.bookcrossing.project.entity.vo.CommentVO;
 
 import java.util.List;
 
@@ -38,6 +39,8 @@ public interface CommentService {
      * @return 查询结果
      */
     Page<Comment> queryByPage(Comment comment, Pageable pageRequest);
+
+    Page<CommentVO> queryCommentVOPage(Comment comment, Pageable pageable);
 
     /**
      * 新增数据

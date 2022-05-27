@@ -1,4 +1,4 @@
-import request, {get, post, put, del} from "@/request/http";
+import request, {get, post, } from "@/request/http";
 
 /**
  * @author zhenwen
@@ -9,6 +9,4 @@ export default {
     request,
     get,
     post,
-    put,
-    del,
 }

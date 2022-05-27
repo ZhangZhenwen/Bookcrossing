@@ -25,9 +25,12 @@ export interface Book {
     bookNo: string,
     name: string,
     author: string,
+    introduction: string,
     type: string,
     status: string,
     createDate: string,
+    pdfName: string,
+    pdfUrl: string,
 }
 
 export interface Announcement {

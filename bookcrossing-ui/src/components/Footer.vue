@@ -2,11 +2,11 @@
   <div id="footer">
     <div class="row">
       <div class="col-sm-4 my-2">
-        <ul v-for="items in array" class="nav flex-column">
-          <li v-for="item in items" class="nav-item">
-            {{ item }}
-          </li>
-        </ul>
+<!--        <ul v-for="items in array" class="nav flex-column">-->
+<!--          <li v-for="item in items" class="nav-item">-->
+<!--            {{ item }}-->
+<!--          </li>-->
+<!--        </ul>-->
       </div>
     </div>
   </div>
@@ -34,6 +34,7 @@ export default class Footer extends Vue {}
   padding: 14px 40px;
   background-color: hsl(40, 15%, 25%) !important;
   color: rgba(255, 255, 255, .4);
+  height: 60px;
 }
 
 .row {

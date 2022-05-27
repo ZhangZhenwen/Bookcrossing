@@ -1,4 +1,4 @@
-import request, {get, post, put, del} from "@/request/http";
+import request, {get, post} from "@/request/http";
 import url from "@/request/url"
 
 /**
@@ -10,8 +10,6 @@ export default {
     request,
     get,
     post,
-    put,
-    del,
 
     url,
 }

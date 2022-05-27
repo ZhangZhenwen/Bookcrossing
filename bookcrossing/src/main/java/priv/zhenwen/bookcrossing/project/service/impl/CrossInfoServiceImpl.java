@@ -11,6 +11,7 @@ import priv.zhenwen.bookcrossing.project.entity.Book;
 import priv.zhenwen.bookcrossing.project.entity.CrossInfo;
 import priv.zhenwen.bookcrossing.project.entity.User;
 import priv.zhenwen.bookcrossing.project.entity.vo.ApplyVo;
+import priv.zhenwen.bookcrossing.project.entity.vo.UserCrossInfoVo;
 import priv.zhenwen.bookcrossing.project.mapper.CrossInfoMapper;
 import priv.zhenwen.bookcrossing.project.service.BookService;
 import priv.zhenwen.bookcrossing.project.service.CrossInfoService;
@@ -19,6 +20,7 @@ import priv.zhenwen.bookcrossing.project.service.UserService;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -75,6 +77,40 @@ public class CrossInfoServiceImpl implements CrossInfoService {
     public Page<CrossInfo> queryByPage(CrossInfo crossInfo, Pageable pageRequest) {
         long total = this.crossInfoMapper.count(crossInfo);
         return new PageImpl<>(this.crossInfoMapper.queryAllByLimit(crossInfo, pageRequest), pageRequest, total);
+    }
+
+    @Override
+    public Page<UserCrossInfoVo> queryUserCrossInfoVOPage(CrossInfo crossInfo, Pageable pageRequest) {
+        long total = this.crossInfoMapper.count(crossInfo);
+        Page<CrossInfo> crossInfoPage = queryByPage(crossInfo, pageRequest);
+        Iterator<CrossInfo> iterator = crossInfoPage.iterator();
+        List<UserCrossInfoVo> userCrossInfoVos = new ArrayList<>();
+        while (iterator.hasNext()) {
+            CrossInfo item = iterator.next();
+             // 漂流状态（0：已拒绝、1：申请中、2：申请成功、3：漂流中、4：已完成）
+            String status = item.getStatus();
+            switch (status) {
+                case "0":
+                    status = "已拒绝";
+                    break;
+                case "1":
+                    status = "申请中";
+                    break;
+                case "2":
+                    status = "申请成功";
+                    break;
+                case "3":
+                    status = "漂流中";
+                    break;
+                case "4":
+                    status = "已完成";
+                    break;
+            }
+            item.setStatus(status);
+            UserCrossInfoVo vo = new UserCrossInfoVo(bookService.queryById(item.getBookId()), item);
+            userCrossInfoVos.add(vo);
+        }
+        return new PageImpl<>(userCrossInfoVos, pageRequest, total);
     }
 
     /**
@@ -186,7 +222,7 @@ public class CrossInfoServiceImpl implements CrossInfoService {
         crossInfo.setStatus("4");
         update(crossInfo);
 
-        book.setStatus("1");
+        book.setStatus("2");
         book.setUserId(applyVo.getUserId());
         bookService.update(book);
 

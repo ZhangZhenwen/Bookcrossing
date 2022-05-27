@@ -1,4 +1,4 @@
-import { get, post, put, del } from "@/request/http";
+import { get, post} from "@/request/http";
 
 /**
  * @author zhenwen
@@ -24,14 +24,6 @@ const addData = (url: string, data: object) => {
     return post(url + "/add", data);
 }
 
-const editData = (url: string, data: object) => {
-    return put(url + "/edit", data);
-}
-
-const deleteData = (url: string, data: object) => {
-    return del(url + "/delete", data);
-}
-
 export default {
     BOOK,
     CROSSINFO,
@@ -43,6 +35,4 @@ export default {
 
     getList,
     addData,
-    editData,
-    deleteData,
 }

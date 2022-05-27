@@ -1,21 +1,31 @@
 <template>
   <div id="main" class="container-fluid">
     <el-space wrap class="content">
-      <el-card>
-        <template #header>
+      <div class="left-menu">
+        <el-card>
+          <template #header>
+            <div>
+              <h2>用户资料</h2>
+            </div>
+          </template>
+          <img src="https://zhenwen66.cn/cloud/download?url=/2022/05/04/93998e90-330b-43a7-94f2-85e9cb3029f1.jpg"
+               class="user-avater">
+          <div><span class="user-info-font">用户名: {{ user.username }}</span></div>
+          <div><span class="user-info-font">邮箱号: {{ user.email }}</span></div>
+          <div><span class="user-info-font">手机号: {{ user.tel }}</span></div>
           <div>
-            <h2>用户资料</h2>
+            <el-button @click="handleUserEdit">编辑资料</el-button>
+            <el-button type="danger" @click="handleLogout">退出登录</el-button>
           </div>
-        </template>
-        <div><span class="user-info-font">用户名: {{ user.username }}</span></div>
-        <div><span class="user-info-font">邮箱号: {{ user.email }}</span></div>
-        <div><span class="user-info-font">手机号: {{ user.tel }}</span></div>
-        <div>
-          <el-button @click="handleUserEdit">编辑资料</el-button>
-          <el-button type="danger" @click="handleLogout">退出登录</el-button>
-        </div>
-      </el-card>
-      <div>
+        </el-card>
+        <el-card>
+          <img src="../assets/images/cross_pic.jpg"
+               class="image">
+        </el-card>
+      </div>
+
+
+      <div class="right-menu">
         <el-card class="table-card">
           <template #header>
             <h1 style="display: inline-block">拥有的图书列表</h1>
@@ -26,14 +36,14 @@
             >上传图书</el-button
             >
           </template>
-          <el-table :data="bookList">
+          <el-table :data="bookList" @row-dblclick="goDetail">
             <el-table-column label="图书编号" prop="bookNo" />
             <el-table-column label="图书名称" prop="name" />
             <el-table-column label="图书作者" prop="author" />
             <el-table-column label="图书类型" prop="type" />
             <el-table-column label="图书状态" prop="status" />
             <el-table-column label="上传时间" prop="createDate" />
-            <el-table-column label="操作">
+            <el-table-column label="操作" width="200px">
               <template #default="scope">
                 <el-button size="mini" @click="handleBookEdit(scope.row)"
                   >编辑</el-button
@@ -59,7 +69,7 @@
             <el-table-column label="上传时间" prop="createDate" />
             <el-table-column label="申请人" prop="username" />
             <el-table-column label="申请时间" prop="updateDate" />
-            <el-table-column label="操作">
+            <el-table-column label="操作" width="200px">
               <template #default="scope">
                 <el-button
                   type="success"
@@ -125,6 +135,9 @@
       <el-form-item label="作者名称">
         <el-input v-model="bookForm.author" />
       </el-form-item>
+      <el-form-item label="图书简介">
+        <el-input v-model="bookForm.introduction" />
+      </el-form-item>
       <el-form-item label="图书类型">
         <el-select v-model="bookForm.type">
           <el-option
@@ -135,6 +148,33 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="图书状态">
+        <el-select v-model="bookForm.status">
+          <el-option
+              v-for="item in bookStatus"
+              :key="item.status"
+              :label="item.statusName"
+              :value="item.status">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-upload
+          ref="upload"
+          class="upload-demo"
+          :headers="headers"
+          action="/api/upload_book_pdf"
+          :limit="1"
+          :on-success="uploadPdf"
+      >
+        <el-button type="primary">
+          选择文件
+        </el-button>
+        <template #tip>
+          <div class="el-upload__tip text-red">
+            limit 1 file, new file will cover the old file
+          </div>
+        </template>
+      </el-upload>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
@@ -180,9 +220,12 @@ export default {
       bookNo: "",
       name: "",
       author: "",
+      introduction: "",
       type: "",
       status: "",
       createDate: "",
+      pdfName: "",
+      pdfUrl: "",
     });
 
     const userFormVisible = ref<boolean>();
@@ -192,17 +235,32 @@ export default {
       email: "",
       tel: "",
     });
-
+    const headers = ref({Authorization: localStorage.getItem("token")});
     const bookTypes = ref();
-
+    const bookStatus = [{"status": "0", "statusName": "上传中"},
+      {"status": "1", "statusName": "可漂流"},
+      {"status": "2", "statusName": "已漂流"}]
     const bookList = ref();
     const crossInfoList = ref();
     const applyList = ref();
 
+    const goDetail = (row: any) => {
+      router.push({
+        name: "Detail",
+        params: {
+          bookId: row.bookId,
+        }
+      });
+    }
+
+    const uploadPdf = (res: AjaxResult<string>) => {
+      bookForm.value.pdfUrl = res.data
+      console.log(bookForm.value.pdfUrl)
+    }
+
     const getUserInfo = () => {
       api.get("/getInfo").then((res: AjaxResult<User>) => {
         user.value = res.data;
-        getBookList();
         getCrossInfoList();
         getApplyList();
         getBookTypes();
@@ -211,7 +269,7 @@ export default {
 
     const getBookList = () => {
       api
-        .get("/book/list", { userId: user.value.userId })
+        .get("/book/vo", { userId: user.value.userId })
         .then((res: AjaxResult<PageData<object>>) => {
           bookList.value = res.data.content;
         });
@@ -219,7 +277,7 @@ export default {
 
     const getCrossInfoList = () => {
       api
-        .get("/crossInfo/list", { userId: user.value.userId })
+        .get("/crossInfo/user_vo", { userId: user.value.userId })
         .then((res: AjaxResult<PageData<object>>) => {
           crossInfoList.value = res.data.content;
         });
@@ -238,6 +296,7 @@ export default {
         .get("bookType/list")
         .then((res: AjaxResult<PageData<BookType>>) => {
           bookTypes.value = res.data.content;
+          getBookList();
         });
     };
 
@@ -249,6 +308,8 @@ export default {
             message: "同意漂流成功！图书已经出发！",
             type: "success",
           });
+          getApplyList();
+          getBookList();
         });
     };
 
@@ -257,9 +318,10 @@ export default {
         .post("crossInfo/refuse", row)
         .then((res: AjaxResult<boolean>) => {
           ElMessage.success({
-            message: "同意漂流成功！图书已经出发！",
+            message: "拒绝漂流成功！",
             type: "success",
           });
+          getApplyList();
         });
     };
 
@@ -282,14 +344,14 @@ export default {
         type: "warning",
       })
         .then(() => {
-          api.del("/delete", row.bookId).then((res: AjaxResult<object>) => {
+          api.post("/book/delete", row.bookId)
+              .then((res: AjaxResult<object>) => {
             ElMessage.success({
               type: "success",
               message: res.msg,
             });
+            getBookList();
           });
-
-          getBookList();
         })
         .catch(() => {
           ElMessage.info({
@@ -310,7 +372,7 @@ export default {
       let url = "/" + func[0] + "/" + func[1];
       switch (func[0]) {
         case "user":
-          api.put(url, userForm.value).then((res: AjaxResult<User>) => {
+          api.post(url, userForm.value).then((res: AjaxResult<User>) => {
             ElMessage.success({
               message: res.msg,
               type: "success",
@@ -331,7 +393,7 @@ export default {
               break;
 
             case "edit":
-              api.put(url, bookForm.value).then((res: AjaxResult<string>) => {
+              api.post(url, bookForm.value).then((res: AjaxResult<string>) => {
                 ElMessage.success({
                   message: res.msg,
                   type: "success",
@@ -369,15 +431,19 @@ export default {
     });
 
     return {
+      headers,
       user,
       userFormVisible,
       userForm,
       bookFormVisible,
       bookForm,
       bookList,
+      bookStatus,
       bookTypes,
       crossInfoList,
       applyList,
+
+      goDetail,
 
       agreeApply,
       refuseApply,
@@ -385,6 +451,7 @@ export default {
       handleBookAdd,
       handleBookEdit,
       handleBookDelete,
+      uploadPdf,
 
       handleUserEdit,
       handleSubmit,
@@ -395,6 +462,15 @@ export default {
 </script>
 
 <style scoped>
+.left-menu {
+  position: fixed;
+  bottom: 110px;
+}
+
+.right-menu {
+  margin-left: 260px;;
+}
+
 #main {
   padding-top: 90px;
 }
@@ -407,15 +483,26 @@ export default {
 }
 
 .user-info-font {
+  line-height: 50px;
   font-size: 18px;
 }
 
 .content {
-  margin: 0 350px;
+  margin: 0 220px;
   min-height: 900px;
 }
 
 .table-card {
-  width: 800px;
+  width: 1150px;
+}
+
+.user-avater {
+  width: 200px;
+  display: block;
+}
+
+.image {
+  width: 200px;
+  display: block;
 }
 </style>

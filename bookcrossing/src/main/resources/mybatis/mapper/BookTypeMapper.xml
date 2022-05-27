@@ -119,7 +119,7 @@
         update book_type
         <set>
             <if test="typeCode != null and typeCode != ''">
-                and type_code = #{typeCode}
+                type_code = #{typeCode},
             </if>
             <if test="typeName != null and typeName != ''">
                 type_name = #{typeName},

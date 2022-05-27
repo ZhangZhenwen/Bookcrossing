@@ -10,6 +10,16 @@ package priv.zhenwen.bookcrossing.common.constant;
 public class Constants {
 
     /**
+     * 域名前缀
+     */
+    public static final String DOMAIN_PREFIX = "http://localhost:8080/";
+
+    /**
+     * 资源映射路径 前缀
+     */
+    public static final String DOWNLOAD_PREFIX = "download";
+
+    /**
      * 登录用户 redis key
      */
     public static final String LOGIN_TOKEN_KEY = "login_tokens:";

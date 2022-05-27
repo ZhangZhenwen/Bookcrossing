@@ -12,14 +12,16 @@
         <result property="status" column="status" jdbcType="VARCHAR"/>
         <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
         <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="pdfName" column="pdf_name" jdbcType="VARCHAR"/>
+        <result property="pdfUrl" column="pdf_url" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="columns">
-        book_id, book_no, name, author, introduction, type, status, create_date, user_id
+        book_id, book_no, name, author, introduction, type, status, create_date, user_id, pdf_name, pdf_url
     </sql>
 
     <sql id="columns_no_key">
-        book_no, name, author, introduction, type, status, create_date, user_id
+        book_no, name, author, introduction, type, status, create_date, user_id, pdf_name, pdf_url
     </sql>
 
     <!--查询单个-->
@@ -63,6 +65,12 @@
             <if test="userId != null">
                 and user_id = #{userId}
             </if>
+            <if test="pdfName != null">
+                and pdf_name = #{pdfName}
+            </if>
+            <if test="pdfUrl != null">
+                and pdf_url = #{pdfUrl}
+            </if>
         </where>
     </select>
     
@@ -98,6 +106,12 @@
             </if>
             <if test="book.userId != null">
                 and user_id = #{book.userId}
+            </if>
+            <if test="book.pdfName != null">
+                and pdf_name = #{book.pdfName}
+            </if>
+            <if test="book.pdfUrl != null">
+                and pdf_url = #{book.pdfUrl}
             </if>
         </where>
         limit #{pageable.offset}, #{pageable.pageSize}
@@ -135,6 +149,12 @@
             <if test="userId != null">
                 and user_id = #{userId}
             </if>
+            <if test="pdfName != null">
+                and pdf_name = #{pdfName}
+            </if>
+            <if test="pdfUrl != null">
+                and pdf_url = #{pdfUrl}
+            </if>
         </where>
     </select>
     <select id="queryByBook" resultMap="BookMap">
@@ -168,20 +188,26 @@
             <if test="userId != null">
                 and user_id = #{userId}
             </if>
+            <if test="pdfName != null">
+                and pdf_name = #{pdfName}
+            </if>
+            <if test="pdfUrl != null">
+                and pdf_url = #{pdfUrl}
+            </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="bookId" useGeneratedKeys="true">
         insert into book(<include refid="columns_no_key"/>)
-        values (#{bookNo}, #{name}, #{author}, #{introduction} #{type}, #{status}, #{createDate}, #{userId})
+        values (#{bookNo}, #{name}, #{author}, #{introduction}, #{type}, #{status}, #{createDate}, #{userId}, #{pdfName}, #{pdfUrl})
     </insert>
 
     <insert id="insertBatch" keyProperty="bookId" useGeneratedKeys="true">
         insert into book(<include refid="columns_no_key"/>)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.bookNo}, #{entity.name}, #{entity.author}, #{entity.introduction} #{entity.type}, #{entity.status}, #{entity.createDate}, #{entity.userId})
+        (#{entity.bookNo}, #{entity.name}, #{entity.author}, #{entity.introduction}, #{entity.type}, #{entity.status}, #{entity.createDate}, #{entity.userId}, #{entity.pdfName}, #{entity.pdfUrl})
         </foreach>
     </insert>
 
@@ -189,17 +215,19 @@
         insert into book(<include refid="columns_no_key"/>)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.bookNo}, #{entity.name}, #{entity.author}, #{entity.introduction} #{entity.type}, #{entity.status}, #{entity.createDate}, #{entity.userId})
+            (#{entity.bookNo}, #{entity.name}, #{entity.author}, #{entity.introduction}, #{entity.type}, #{entity.status}, #{entity.createDate}, #{entity.userId}, #{entity.pdfName}, #{entity.pdfUrl})
         </foreach>
         on duplicate key update
         book_no = values(book_no),
         name = values(name),
         author = values(author),
-        introduction = values(introduction)
+        introduction = values(introduction),
         type = values(type),
         status = values(status),
         create_date = values(create_date)
         user_id = values(user_id)
+        pdf_name = values(pdf_name)
+        pdf_url = values(pdf_url)
     </insert>
 
     <!--通过主键修改数据-->
@@ -216,7 +244,7 @@
                 author = #{author},
             </if>
             <if test="introduction != null and introduction != ''">
-                and introduction = #{introduction}
+                introduction = #{introduction},
             </if>
             <if test="type != null">
                 type = #{type},
@@ -229,6 +257,12 @@
             </if>
             <if test="userId != null">
                 user_id = #{userId},
+            </if>
+            <if test="pdfName != null and pdfName != ''">
+                pdf_name = #{pdfName},
+            </if>
+            <if test="pdfUrl != null and pdfUrl != ''">
+                pdf_url = #{pdfUrl}
             </if>
         </set>
         where book_id = #{bookId}

@@ -1,12 +1,12 @@
 <template>
   <el-table ref="table" :data="data" class="main-table">
     <el-table-column type="selection" />
-    <el-table-column prop="parentId" label="父节点" />
-    <el-table-column prop="content" label="内容" />
+    <el-table-column prop="name" label="目标" />
+    <el-table-column prop="content" show-overflow-tooltip label="内容" />
     <el-table-column prop="type" label="评论类型" />
     <el-table-column prop="status" label="评论状态" />
     <el-table-column prop="createDate" label="创建时间" />
-    <el-table-column prop="userId" label="用户ID" />
+    <el-table-column prop="username" label="用户名称" />
     <el-table-column label="操作">
       <template #header>
         <el-button type="success" @click="handleAdd"> 添加 </el-button>
@@ -26,26 +26,39 @@
   <el-dialog title="评论" width="500px" v-model="formVisible">
     <el-form :model="formData">
       <el-form-item label="父节点">
-        <el-input v-model="formData.parentId" />
+        <el-input v-model="formData.name" disabled />
       </el-form-item>
       <el-form-item label="内容">
         <el-input type="textarea" v-model="formData.content" />
       </el-form-item>
       <el-form-item label="评论类型">
-        <el-input v-model="formData.type" />
+        <el-select v-model="formData.type">
+          <el-option
+              v-for="(item, index) in commentTypes"
+              :key="index"
+              :label="item"
+              :value="index">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="评论状态">
-        <el-input v-model="formData.status" />
+        <el-select v-model="formData.status">
+          <el-option
+              v-for="(item, index) in commentStatus"
+              :key="index"
+              :label="item"
+              :value="index">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="创建时间">
         <el-date-picker
           v-model="formData.createDate"
           type="datetime"
           placeholder="选择创建时间"
+          format="YYYY/MM/DD hh:mm:ss"
+          value-format="YYYY-MM-DD hh:mm:ss"
         />
-      </el-form-item>
-      <el-form-item label="用户ID">
-        <el-input v-model="formData.userId" />
       </el-form-item>
     </el-form>
 
@@ -65,7 +78,7 @@ import { AjaxResult, PageData } from "@/assets";
 
 interface Comment {
   commentId: Number;
-  parentId: Number;
+  name: String;
   content: String;
   type: String;
   status: String;
@@ -75,17 +88,14 @@ interface Comment {
 
 export default {
   name: "DataTable",
-  props: {
-    url: String,
-  },
 
-  setup(props: { url: string }) {
+  setup() {
     const formVisible = ref(false);
     let formFunc = "";
     let pageCount = ref();
     const formData = ref<Comment>({
       commentId: 0,
-      parentId: 0,
+      name: "",
       content: "",
       type: "",
       status: "",
@@ -93,11 +103,12 @@ export default {
       userId: 0,
     });
     const api: any = inject("$api");
-
+    const commentTypes = ["未确定", "公告留言", "新闻留言", "图书漂流问题", "网站运维", "图书评论"]
+    const commentStatus = ["根评论", "回复评论"]
     const data = ref();
     const getList = (page: number) => {
       api
-        .get(props.url + "/list", {page: page, size: 10})
+        .get("/comment/vo", {page: page, size: 10})
         .then((res: AjaxResult<PageData<Comment>>) => {
           data.value = res.data.content;
           pageCount.value = res.data.totalPages;
@@ -108,7 +119,7 @@ export default {
       formVisible.value = true;
       formData.value = {
         commentId: 0,
-        parentId: 0,
+        name: "",
         content: "",
         type: "",
         status: "",
@@ -132,14 +143,15 @@ export default {
       })
         .then(() => {
           api
-            .del(props.url + "/delete", row.commentId)
+            .post("/comment/delete", row.commentId)
             .then((res: AjaxResult<object>) => {
               ElMessage.success({
                 type: "success",
                 message: res.msg,
               });
+
+              getList(1);
             });
-          getList(1);
         })
         .catch(() => {
           ElMessage.info({
@@ -155,27 +167,29 @@ export default {
       switch (formFunc) {
         case "add":
           api
-            .post(props.url + "/add", formData.value)
+            .post("/comment/add", formData.value)
             .then((res: AjaxResult<string>) => {
               ElMessage.success({
                 type: "success",
                 message: res.msg,
               });
+
+              getList(1);
             });
           break;
         case "edit":
           api
-            .put(props.url + "/edit", formData.value)
+            .post("/comment/edit", formData.value)
             .then((res: AjaxResult<string>) => {
               ElMessage.success({
                 type: "success",
                 message: res.msg,
               });
+
+              getList(1);
             });
           break;
       }
-
-      getList(1);
     };
 
     onMounted(() => {
@@ -187,6 +201,8 @@ export default {
       pageCount,
       formVisible,
       formData,
+      commentTypes,
+      commentStatus,
       getList,
       handleAdd,
       handleEdit,

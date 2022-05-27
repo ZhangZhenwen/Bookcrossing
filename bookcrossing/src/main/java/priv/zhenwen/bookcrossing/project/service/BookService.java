@@ -3,6 +3,7 @@ package priv.zhenwen.bookcrossing.project.service;
 import priv.zhenwen.bookcrossing.project.entity.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import priv.zhenwen.bookcrossing.project.entity.vo.BookVO;
 
 import java.util.List;
 
@@ -70,4 +71,8 @@ public interface BookService {
      * @return 实例对象
      */
     Book queryByBook(Book book);
+
+    Book getBookDetail(Long bookId);
+
+    Page<BookVO> getBookVOList(Book book, Pageable pageRequest);
 }

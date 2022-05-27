@@ -63,7 +63,7 @@ public class NoticeController {
      * @param notice 实体
      * @return 编辑结果
      */
-    @PutMapping("/edit")
+    @PostMapping("/edit")
     public AjaxResult edit(@RequestBody Notice notice) {
         return AjaxResult.ok(this.noticeService.update(notice));
     }
@@ -74,8 +74,8 @@ public class NoticeController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping("/delete/{id}")
-    public AjaxResult deleteById(@PathVariable Long id) {
+    @PostMapping("/delete")
+    public AjaxResult deleteById(@RequestBody Long id) {
         return AjaxResult.ok(this.noticeService.deleteById(id));
     }
 

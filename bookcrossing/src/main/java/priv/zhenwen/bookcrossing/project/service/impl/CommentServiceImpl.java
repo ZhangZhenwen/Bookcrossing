@@ -7,12 +7,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import priv.zhenwen.bookcrossing.common.util.StringUtils;
 import priv.zhenwen.bookcrossing.framework.security.service.LoginService;
+import priv.zhenwen.bookcrossing.project.entity.Book;
 import priv.zhenwen.bookcrossing.project.entity.Comment;
+import priv.zhenwen.bookcrossing.project.entity.vo.CommentVO;
 import priv.zhenwen.bookcrossing.project.mapper.CommentMapper;
+import priv.zhenwen.bookcrossing.project.service.BookService;
 import priv.zhenwen.bookcrossing.project.service.CommentService;
+import priv.zhenwen.bookcrossing.project.service.UserService;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -25,6 +31,12 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     @Resource
     private CommentMapper commentMapper;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private BookService bookService;
 
     @Autowired
     LoginService loginService;
@@ -63,6 +75,36 @@ public class CommentServiceImpl implements CommentService {
     public Page<Comment> queryByPage(Comment comment, Pageable pageRequest) {
         long total = this.commentMapper.count(comment);
         return new PageImpl<>(this.commentMapper.queryAllByLimit(comment, pageRequest), pageRequest, total);
+    }
+
+    @Override
+    public Page<CommentVO> queryCommentVOPage(Comment comment, Pageable pageable) {
+        long total = this.commentMapper.count(comment);
+        Page<Comment> commentPage = queryByPage(comment, pageable);
+        Iterator<Comment> iterator = commentPage.iterator();
+        List<CommentVO> commentVOS = new ArrayList<>();
+        while (iterator.hasNext()) {
+            Comment item = iterator.next();
+            // 漂流状态（0：已拒绝、1：申请中、2：申请成功、3：漂流中、4：已完成）
+
+            int typeId = Integer.parseInt(item.getType());
+            int statusId = Integer.parseInt(item.getStatus());
+            String[] types = {"未确定", "公告留言", "新闻留言", "图书漂流问题", "网站运维", "图书评论"};
+            String[] status = {"根评论", "子评论"};
+            item.setType(types[typeId]);
+            item.setStatus(status[statusId]);
+
+            String username = userService.queryById(item.getUserId()).getUsername();
+            Book book =  bookService.queryById(item.getParentId());
+            String name = null;
+            if (book != null) {
+                name = book.getName();
+            }
+
+            CommentVO vo = new CommentVO(item, name, username);
+            commentVOS.add(vo);
+        }
+        return new PageImpl<>(commentVOS, pageable, total);
     }
 
     /**

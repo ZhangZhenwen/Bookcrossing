@@ -36,6 +36,11 @@ public class CrossInfoController {
         return AjaxResult.ok(this.crossInfoService.queryByPage(crossInfo, pageRequest));
     }
 
+    @GetMapping("/user_vo")
+    public AjaxResult queryUserVOPage(CrossInfo crossInfo, Pageable pageable) {
+        return AjaxResult.ok(this.crossInfoService.queryUserCrossInfoVOPage(crossInfo, pageable));
+    }
+
     /**
      * 查询请求列表
      *
@@ -66,17 +71,6 @@ public class CrossInfoController {
     @PostMapping("/handle")
     public AjaxResult handleCrossing(@RequestBody CrossInfo crossInfo) {
         return AjaxResult.ok(this.crossInfoService.handleCrossing(crossInfo));
-    }
-
-    /**
-     * 是否正在漂流图书
-     *
-     * @param crossInfo 漂流请求
-     * @return 是否正在漂流
-     */
-    @PostMapping("/checkApply")
-    public AjaxResult isApplying(@RequestBody CrossInfo crossInfo) {
-        return AjaxResult.ok(this.crossInfoService.isApplying(crossInfo));
     }
 
     /**
@@ -118,7 +112,7 @@ public class CrossInfoController {
      * @param crossInfo 实体
      * @return 编辑结果
      */
-    @PutMapping("/edit")
+    @PostMapping("/edit")
     public AjaxResult edit(@RequestBody CrossInfo crossInfo) {
         return AjaxResult.ok(this.crossInfoService.update(crossInfo));
     }
@@ -129,8 +123,8 @@ public class CrossInfoController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping("/delete/{id}")
-    public AjaxResult deleteById(@PathVariable Long id) {
+    @PostMapping("/delete")
+    public AjaxResult deleteById(@RequestBody Long id) {
         return AjaxResult.ok(this.crossInfoService.deleteById(id));
     }
 

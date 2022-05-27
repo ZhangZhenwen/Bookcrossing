@@ -63,7 +63,7 @@ public class BookTypeController {
      * @param bookType 实体
      * @return 编辑结果
      */
-    @PutMapping("/edit")
+    @PostMapping("/edit")
     public AjaxResult edit(@RequestBody BookType bookType) {
         return AjaxResult.ok(this.bookTypeService.update(bookType));
     }
@@ -74,8 +74,8 @@ public class BookTypeController {
      * @param id 主键
      * @return 删除是否成功
      */
-    @DeleteMapping("/delete/{id}")
-    public AjaxResult deleteById(@PathVariable Long id) {
+    @PostMapping("/delete")
+    public AjaxResult deleteById(@RequestBody Long id) {
         return AjaxResult.ok(this.bookTypeService.deleteById(id));
     }
 

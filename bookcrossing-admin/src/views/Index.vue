@@ -1,7 +1,12 @@
 <template>
   <el-container class="container">
     <el-header>
-      <h1>图书管理系统后台管理</h1>
+      <img
+          class="indexImage"
+          src="../assets/images/bookcrossing-logo.png"
+          alt="Bookcrossing"
+      />
+      <h1 style="padding: 15px 190px 15px 0">图书管理系统后台管理</h1>
     </el-header>
     <el-container>
       <el-aside class="aside">
@@ -37,6 +42,14 @@
         <router-view />
       </el-main>
     </el-container>
+    <el-footer style="padding: 0">
+      <div id="footer">
+        <div class="row">
+          <div class="col-sm-4 my-2">
+          </div>
+        </div>
+      </div>
+    </el-footer>
   </el-container>
 </template>
 
@@ -83,11 +96,40 @@ export default {
 }
 
 .menu {
-  height: 900px;
+  height: 820px;
 }
 
 .menu-item {
   height: 80px;
   line-height: 85px;
+}
+
+.indexImage {
+  width: 186px;
+  height: 52px;
+  margin: 0 20px 0 0;
+  float: left;
+}
+
+#footer {
+  padding: 14px 40px;
+  background-color: hsl(40, 15%, 25%) !important;
+  color: rgba(255, 255, 255, .4);
+  height: 60px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -15px;
+}
+
+.col-sm-4 {
+  flex: 0 0 33.3%;
+  max-width: 33.3%;
+}
+
+.my-2 {
+  margin-top: .5rem !important;
 }
 </style>

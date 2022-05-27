@@ -4,6 +4,7 @@ import priv.zhenwen.bookcrossing.project.entity.CrossInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import priv.zhenwen.bookcrossing.project.entity.vo.ApplyVo;
+import priv.zhenwen.bookcrossing.project.entity.vo.UserCrossInfoVo;
 
 import java.util.List;
 
@@ -39,6 +40,8 @@ public interface CrossInfoService {
      * @return 查询结果
      */
     Page<CrossInfo> queryByPage(CrossInfo crossInfo, Pageable pageRequest);
+
+    Page<UserCrossInfoVo> queryUserCrossInfoVOPage(CrossInfo crossInfo, Pageable pageRequest);
 
     /**
      * 查询申请列表
